@@ -28,7 +28,7 @@ export function FoodCard({ image, title, price, discount, type }: FoodCardProps)
 					</div>
 				)}
 			</div>
-			<div className="p-3">
+			<div className="p-3 pb-0 h-full flex flex-col">
 				<h3 className="text-sm font-medium mb-1">{title}</h3>
 				<div className="flex justify-between items-center mb-2">
 					<span className="text-green-600 font-bold">R${price.toFixed(2)}</span>
@@ -51,6 +51,9 @@ export function FoodCard({ image, title, price, discount, type }: FoodCardProps)
 						className="rounded-full">
 						<Plus className="h-4 w-4" />
 					</Button>
+				</div>
+				<div className="flex w-full justify-center items-center mt-5">
+					<Button className="bg-orange-400 text-white hover:bg-orange-600">Adicionar na mesa</Button>
 				</div>
 			</div>
 		</Card>

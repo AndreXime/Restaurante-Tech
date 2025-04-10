@@ -30,7 +30,7 @@ export function Cart() {
 				<div>
 					<div className="flex items-baseline justify-center gap-3">
 						<h2 className="text-xl font-bold">Mesa {selectedTable}</h2>
-						<span className="text-gray-500">Cliente: {customerName}</span>
+						<span className="text-gray-500 text-sm">Cliente: {customerName}</span>
 					</div>
 				</div>
 				<Dialog
@@ -73,7 +73,7 @@ export function Cart() {
 						key={index}
 						className="flex items-center gap-3 mb-4">
 						<Image
-							src="/placeholder-food.png"
+							src={item.image}
 							alt={item.title}
 							width={500}
 							height={500}
@@ -108,12 +108,12 @@ export function Cart() {
 					<Button
 						variant="outline"
 						className="flex-1 rounded-full">
-						Consumo Local
+						No Local
 					</Button>
 					<Button
 						variant="outline"
 						className="flex-1 rounded-full">
-						Para Viagem
+						Retirar
 					</Button>
 					<Button
 						variant="outline"

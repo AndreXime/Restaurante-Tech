@@ -7,41 +7,28 @@ interface FoodType {
 }
 const foodItems: FoodType[] = [
 	{
-		image: '/placeholder-food.png',
+		image: '/placeholder-food-1.png',
 		title: 'Salada de Vegetais Saudável',
 		price: 17.99,
 		discount: 20,
 		type: 'Veg',
 	},
 	{
-		image: '/placeholder-food.png',
+		image: '/placeholder-food-2.png',
 		title: 'Hambúrguer de Carne com Batatas',
 		price: 23.99,
 		type: 'Não Veg',
 	},
 	{
-		image: '/placeholder-food.png',
+		image: '/placeholder-food-3.png',
 		title: 'Tacos com Salsa e Frango Grelhado',
 		price: 14.99,
 		type: 'Não Veg',
 	},
 	{
-		image: '/placeholder-food.png',
+		image: '/placeholder-food-4.png',
 		title: 'Suco de Laranja Fresco com Sementes de Manjericão',
 		price: 12.99,
-		type: 'Veg',
-	},
-	{
-		image: '/placeholder-food.png',
-		title: 'Sushi de Carne com Atum e Outros',
-		price: 9.99,
-		type: 'Não Veg',
-	},
-	{
-		image: '/placeholder-food.png',
-		title: 'Hambúrguer Original com Batatas Fritas',
-		price: 10.59,
-		discount: 20,
 		type: 'Veg',
 	},
 ];
