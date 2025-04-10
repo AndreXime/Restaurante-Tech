@@ -1,15 +1,39 @@
 'use client';
 
-import { Search } from 'lucide-react';
+import { LucideShoppingCart, Menu, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useTable } from '../../contexts/table-context';
+import { useMenu } from '../../contexts/MenuContext';
+import { useMobile } from '@/contexts/MobileContext';
+import { cartItems } from '@/fake-data/cartItems';
 
 export function Header() {
-	const { selectedTable, setSelectedTable } = useTable();
+	const { selectedTable, setSelectedTable, setSwitchTab, switchTab } = useMenu();
+	const { setMobileMenu } = useMobile();
 
 	return (
-		<div className="bg-white p-4 flex items-center gap-4 border-b">
+		<div className="bg-white p-4 flex items-center gap-5 border-b">
+			{/* Botão flutuante para telas pequenas */}
+			<div className="lg:hidden flex items-center">
+				<button
+					onClick={() => setMobileMenu(true)}
+					className="rounded-full">
+					<Menu
+						size={25}
+						className="w-full h-full"
+					/>
+				</button>
+			</div>
+			<div
+				className="relative cursor-pointer"
+				onClick={() => setSwitchTab(!switchTab)}>
+				<LucideShoppingCart className="w-6 h-6" />
+				{cartItems.length > 0 && (
+					<span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+						{cartItems.length}
+					</span>
+				)}
+			</div>
 			<div className="flex items-center gap-2">
 				<Select
 					value={selectedTable}

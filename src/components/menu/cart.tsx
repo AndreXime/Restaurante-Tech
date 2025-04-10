@@ -3,21 +3,15 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { CreditCard, QrCode, Banknote, Edit2 } from 'lucide-react';
-import { useTable } from '../../contexts/table-context';
+import { useMenu } from '../../contexts/MenuContext';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Image from 'next/image';
-
-const cartItems = [
-	{ title: 'Hambúrguer de Carne Original com Batatas (Não Veg)', price: 23.99, quantity: 1 },
-	{ title: 'Suco de Laranja Fresco com Sementes de Manjericão Sem Açúcar (Veg)', price: 12.99, quantity: 1 },
-	{ title: 'Sushi de Carne com Atum e Outros (Não Veg)', price: 9.99, quantity: 1 },
-	{ title: 'Tacos com Salsa e Frango Grelhado', price: 14.99, quantity: 1 },
-];
+import { cartItems } from '@/fake-data/cartItems';
 
 export function Cart() {
-	const { selectedTable, customerName, setCustomerName } = useTable();
+	const { selectedTable, customerName, setCustomerName } = useMenu();
 	const [tempCustomerName, setTempCustomerName] = useState(customerName);
 	const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -31,13 +25,13 @@ export function Cart() {
 	};
 
 	return (
-		<div className="w-[380px] bg-white border-l flex flex-col h-full">
+		<div className=" bg-white border-l flex flex-col h-full">
 			<div className="p-4 border-b flex justify-between items-center">
 				<div>
-					<div className="flex items-center gap-2">
+					<div className="flex items-baseline justify-center gap-3">
 						<h2 className="text-xl font-bold">Mesa {selectedTable}</h2>
+						<span className="text-gray-500">Cliente: {customerName}</span>
 					</div>
-					<p className="text-sm text-gray-500">Cliente: {customerName}</p>
 				</div>
 				<Dialog
 					open={dialogOpen}
@@ -72,25 +66,7 @@ export function Cart() {
 					</DialogContent>
 				</Dialog>
 			</div>
-			<div className="p-4 border-b">
-				<div className="flex gap-2 mb-4">
-					<Button
-						variant="secondary"
-						className="flex-1 rounded-full">
-						Consumo Local
-					</Button>
-					<Button
-						variant="outline"
-						className="flex-1 rounded-full">
-						Para Viagem
-					</Button>
-					<Button
-						variant="outline"
-						className="flex-1 rounded-full">
-						Entrega
-					</Button>
-				</div>
-			</div>
+
 			<div className="flex-1 overflow-auto p-4">
 				{cartItems.map((item, index) => (
 					<div
@@ -131,19 +107,36 @@ export function Cart() {
 				<div className="grid grid-cols-3 gap-2 mb-4">
 					<Button
 						variant="outline"
-						className="flex flex-col items-center py-2">
+						className="flex-1 rounded-full">
+						Consumo Local
+					</Button>
+					<Button
+						variant="outline"
+						className="flex-1 rounded-full">
+						Para Viagem
+					</Button>
+					<Button
+						variant="outline"
+						className="flex-1 rounded-full">
+						Entrega
+					</Button>
+				</div>
+				<div className="grid grid-cols-3 gap-2 mb-4">
+					<Button
+						variant="outline"
+						className="flex flex-row items-center py-2">
 						<Banknote className="h-5 w-5 mb-1" />
 						<span className="text-xs">Dinheiro</span>
 					</Button>
 					<Button
 						variant="outline"
-						className="flex flex-col items-center py-2">
+						className="flex flex-row items-center py-2">
 						<CreditCard className="h-5 w-5 mb-1" />
 						<span className="text-xs">Cartão</span>
 					</Button>
 					<Button
 						variant="outline"
-						className="flex flex-col items-center py-2">
+						className="flex flex-row items-center py-2">
 						<QrCode className="h-5 w-5 mb-1" />
 						<span className="text-xs">QR Code</span>
 					</Button>

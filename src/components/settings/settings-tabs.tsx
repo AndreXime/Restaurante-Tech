@@ -11,7 +11,7 @@ export function SettingsTabs() {
 		<Tabs defaultValue="general">
 			<TabsList className="mb-4">
 				<TabsTrigger value="general">Geral</TabsTrigger>
-				<TabsTrigger value="users">Usuários</TabsTrigger>
+				<TabsTrigger value="users">Funcionarios</TabsTrigger>
 				<TabsTrigger value="menu">Cardápio</TabsTrigger>
 			</TabsList>
 

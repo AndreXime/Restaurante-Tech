@@ -11,7 +11,7 @@ export function CartItem({ title, price, quantity, image }: CartItemProps) {
 	return (
 		<div className="flex items-center gap-3 mb-4">
 			<Image
-				src={image || '/placeholder.svg'}
+				src={image || '/placeholder.png'}
 				alt={title}
 				width={500}
 				height={500}
