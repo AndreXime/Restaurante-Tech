@@ -21,7 +21,7 @@ export function TableCard({ id, number, status, guests, time, server }: TableCar
 	return (
 		<Card
 			key={id}
-			className="overflow-hidden">
+			className="overflow-hidden h-65">
 			<CardContent className="p-4 h-full flex flex-col">
 				<div className="flex justify-between items-center mb-3">
 					<h3 className="text-lg font-bold">{number}</h3>

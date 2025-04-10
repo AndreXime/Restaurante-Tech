@@ -25,25 +25,13 @@ const months = [
 export function ReservationCalendar() {
 	const [currentDate, setCurrentDate] = useState(new Date());
 
-	const getDaysInMonth = (year: number, month: number) => {
-		return new Date(year, month + 1, 0).getDate();
-	};
-
-	const getFirstDayOfMonth = (year: number, month: number) => {
-		return new Date(year, month, 1).getDay();
-	};
-
 	const year = currentDate.getFullYear();
 	const month = currentDate.getMonth();
-	const daysInMonth = getDaysInMonth(year, month);
-	const firstDayOfMonth = getFirstDayOfMonth(year, month);
+	const daysInMonth = new Date(year, month + 1, 0).getDate();
+	const firstDayOfMonth = new Date(year, month, 1).getDay();
 
-	const prevMonth = () => {
-		setCurrentDate(new Date(year, month - 1, 1));
-	};
-
-	const nextMonth = () => {
-		setCurrentDate(new Date(year, month + 1, 1));
+	const changeMonth = (offset: number) => {
+		setCurrentDate(new Date(year, month + offset, 1));
 	};
 
 	const getReservationsForDate = (day: number) => {
@@ -99,7 +87,7 @@ export function ReservationCalendar() {
 					<Button
 						variant="outline"
 						size="icon"
-						onClick={prevMonth}>
+						onClick={() => changeMonth(-1)}>
 						<ChevronLeft className="h-4 w-4" />
 					</Button>
 					<h2 className="text-xl font-bold">
@@ -108,12 +96,12 @@ export function ReservationCalendar() {
 					<Button
 						variant="outline"
 						size="icon"
-						onClick={nextMonth}>
+						onClick={() => changeMonth(1)}>
 						<ChevronRight className="h-4 w-4" />
 					</Button>
 				</div>
 
-				<div className="grid grid-cols-7 gap-1">
+				<div className="grid grid-cols-7 gap-1 overflow-scroll">
 					{weekDays.map((day) => (
 						<div
 							key={day}
