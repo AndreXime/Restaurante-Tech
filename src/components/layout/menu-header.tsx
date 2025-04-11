@@ -7,7 +7,7 @@ import { useMenu } from '../../contexts/MenuContext';
 import { useNav } from '@/contexts/NavContext';
 
 export function MenuHeader() {
-	const { selectedTable, setSelectedTable, cartItems } = useMenu();
+	const { selectedTable, setSelectedTable, cartItems, setSearchItem } = useMenu();
 	const { setTab, Tab, setMobileMenu } = useNav();
 
 	return (
@@ -62,6 +62,7 @@ export function MenuHeader() {
 					type="text"
 					placeholder="Buscar produto aqui..."
 					className="pl-10 w-full text-sm"
+					onChange={(e) => setSearchItem(e.target.value)}
 				/>
 			</div>
 		</div>

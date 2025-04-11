@@ -18,6 +18,8 @@ type TableContextType = {
 	setCustomerName: (name: string) => void;
 	cartItems: FoodCartType[];
 	setCartItems: Dispatch<SetStateAction<FoodCartType[]>>;
+	searchItem: string;
+	setSearchItem: Dispatch<SetStateAction<string>>;
 };
 
 const TableContext = createContext<TableContextType | undefined>(undefined);
@@ -26,6 +28,7 @@ export function MenuContext({ children }: { children: ReactNode }) {
 	const [selectedTable, setSelectedTable] = useState('1');
 	const [customerName, setCustomerName] = useState('Floyd Miles');
 	const [cartItems, setCartItems] = useState<FoodCartType[]>([]);
+	const [searchItem, setSearchItem] = useState('');
 
 	// Recupera os valores do localStorage ao montar o componente
 	useEffect(() => {
@@ -52,7 +55,16 @@ export function MenuContext({ children }: { children: ReactNode }) {
 
 	return (
 		<TableContext.Provider
-			value={{ selectedTable, setSelectedTable, customerName, setCustomerName, cartItems, setCartItems }}>
+			value={{
+				selectedTable,
+				setSelectedTable,
+				customerName,
+				setCustomerName,
+				cartItems,
+				setCartItems,
+				searchItem,
+				setSearchItem,
+			}}>
 			{children}
 		</TableContext.Provider>
 	);

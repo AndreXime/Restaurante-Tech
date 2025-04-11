@@ -2,11 +2,16 @@ import { foodItems } from '@/fake-data/food';
 import { FoodCard } from './food-card';
 import { categories } from '@/fake-data/menu';
 import { useState } from 'react';
+import { useMenu } from '@/contexts/MenuContext';
 
 export function MenuGrid() {
 	const [ActiveCategory, setActiveCategory] = useState('Todos');
-	const activeItems =
-		ActiveCategory != 'Todos' ? foodItems.filter((item) => item.category.includes(ActiveCategory)) : foodItems;
+	const { searchItem } = useMenu();
+	// Primeiro filtra pela categoria e depois pelo input insensitive
+	const activeItems = (
+		ActiveCategory != 'Todos' ? foodItems.filter((item) => item.category.includes(ActiveCategory)) : foodItems
+	).filter((item) => item.title.toLowerCase().includes(searchItem.toLowerCase()));
+
 	return (
 		<>
 			<div className="flex gap-3 mb-4 overflow-x-auto pb-2">
