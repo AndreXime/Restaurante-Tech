@@ -1,11 +1,13 @@
+import { CategoriesType } from '@/types/types';
 import { Grid, Coffee, UtensilsCrossed, ChefHat, Sandwich } from 'lucide-react';
 
-const categories = [
-	{ icon: Grid, label: 'Todos', items: '100 Itens', active: true },
-	{ icon: ChefHat, label: 'Pratos Principais', items: '24 Itens' },
-	{ icon: Coffee, label: 'Café da Manhã', items: '16 Itens' },
-	{ icon: UtensilsCrossed, label: 'Massas', items: '14 Itens' },
-	{ icon: Sandwich, label: 'Hambúrgueres', items: '13 Itens' },
+const categories: CategoriesType[] = [
+	{ id: 1, icon: Grid, label: 'Todos', items: '50 Itens' },
+	{ id: 1, icon: ChefHat, label: 'Pratos Principais', items: '24 Itens' },
+	{ id: 1, icon: Coffee, label: 'Massas', items: '16 Itens' },
+	{ id: 1, icon: UtensilsCrossed, label: 'Saladas', items: '14 Itens' },
+	{ id: 1, icon: Sandwich, label: 'Hambúrgueres', items: '13 Itens' },
+	{ id: 1, icon: Sandwich, label: 'Suco', items: '13 Itens' },
 ];
 
 export { categories };

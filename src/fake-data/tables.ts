@@ -1,11 +1,4 @@
-interface TableType {
-	id: number;
-	number: string;
-	status: 'ocupada' | 'livre' | 'reservada';
-	guests: number;
-	time: string;
-	server: string;
-}
+import { TableType } from '@/types/types';
 
 const tables: TableType[] = [
 	{ id: 1, number: 'Mesa 1', status: 'ocupada', guests: 4, time: '14:30', server: 'João Silva' },

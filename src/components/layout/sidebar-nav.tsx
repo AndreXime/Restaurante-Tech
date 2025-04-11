@@ -13,23 +13,20 @@ import {
 	X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
-import { useMobile } from '@/contexts/MobileContext';
+import { useNav } from '@/contexts/NavContext';
 
 const navItems = [
 	{ icon: Menu, label: 'Cardápio', path: '/' },
 	{ icon: TableBar, label: 'Serviços de Mesa', path: '/servicos-mesa' },
 	{ icon: ChefHat, label: 'Cozinha', path: '/cozinha' },
 	{ icon: CalendarRange, label: 'Reservas', path: '/reservas' },
-	{ icon: Truck, label: 'Entrega', path: '/entrega' },
+	{ icon: Truck, label: 'Entregas', path: '/entrega' },
 	{ icon: Calculator, label: 'Contabilidade', path: '/contabilidade' },
 	{ icon: Settings, label: 'Configurações', path: '/configuracoes' },
 ];
 
 export function SidebarNav() {
-	const pathname = usePathname();
-	const { mobileMenu, setMobileMenu } = useMobile();
+	const { mobileMenu, setMobileMenu, setTab, Tab } = useNav();
 
 	return (
 		<>
@@ -40,18 +37,18 @@ export function SidebarNav() {
 				</div>
 				<nav className="space-y-2">
 					{navItems.map((item, index) => (
-						<Link
+						<Button
 							key={index}
-							href={item.path}>
-							<Button
-								variant="ghost"
-								className={`w-full justify-start hover:bg-green-200 ${
-									pathname === item.path ? 'bg-green-50 text-green-600' : 'text-gray-600'
-								}`}>
-								<item.icon className="mr-2 h-4 w-4" />
-								{item.label}
-							</Button>
-						</Link>
+							variant="ghost"
+							onClick={() => {
+								setTab(item.label);
+							}}
+							className={`w-full justify-start hover:bg-green-200 ${
+								Tab === item.path ? 'bg-green-50 text-green-600' : 'text-gray-600'
+							}`}>
+							<item.icon className="mr-2 h-4 w-4" />
+							{item.label}
+						</Button>
 					))}
 					<Button
 						variant="ghost"
@@ -80,19 +77,19 @@ export function SidebarNav() {
 						</div>
 						<nav className="space-y-2 flex flex-col h-full">
 							{navItems.map((item, index) => (
-								<Link
+								<Button
 									key={index}
-									href={item.path}>
-									<Button
-										onClick={() => setMobileMenu(false)}
-										variant="ghost"
-										className={`w-full justify-start hover:bg-green-200 ${
-											pathname === item.path ? 'bg-green-50 text-green-600' : 'text-gray-600'
-										}`}>
-										<item.icon className="mr-2 h-4 w-4" />
-										{item.label}
-									</Button>
-								</Link>
+									onClick={() => {
+										setMobileMenu(false);
+										setTab(item.label);
+									}}
+									variant="ghost"
+									className={`w-full justify-start hover:bg-green-200 ${
+										Tab === item.label ? 'bg-green-50 text-green-600' : 'text-gray-600'
+									}`}>
+									<item.icon className="mr-2 h-4 w-4" />
+									{item.label}
+								</Button>
 							))}
 							<Button
 								variant="ghost"

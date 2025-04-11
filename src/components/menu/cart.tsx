@@ -8,10 +8,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Image from 'next/image';
-import { cartItems } from '@/fake-data/cartItems';
 
 export function Cart() {
-	const { selectedTable, customerName, setCustomerName } = useMenu();
+	const { selectedTable, customerName, setCustomerName, cartItems } = useMenu();
 	const [tempCustomerName, setTempCustomerName] = useState(customerName);
 	const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -68,6 +67,7 @@ export function Cart() {
 			</div>
 
 			<div className="flex-1 overflow-auto p-4">
+				{cartItems.length == 0 && <h2 className="text-xl font-bold text-center">Nenhum produto foi adicionado</h2>}
 				{cartItems.map((item, index) => (
 					<div
 						key={index}

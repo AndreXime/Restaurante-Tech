@@ -1,9 +1,9 @@
 'use client';
-import { useMobile } from '@/contexts/MobileContext';
+import { useNav } from '@/contexts/NavContext';
 import { Menu } from 'lucide-react';
 
 export function SimpleHeader({ title }: { title: string }) {
-	const { setMobileMenu } = useMobile();
+	const { setMobileMenu } = useNav();
 
 	return (
 		<div className="bg-white p-4 flex items-center  gap-4 border-b">

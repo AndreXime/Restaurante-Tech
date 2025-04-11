@@ -1,15 +1,6 @@
-interface OrderType {
-	id: string;
-	customer: string;
-	address: string;
-	phone: string;
-	items: number;
-	total: number;
-	time: string;
-	status: 'pendente' | 'em andamento' | 'entregue';
-	deliveryPerson?: string;
-}
-const pendingOrders: OrderType[] = [
+import { DeliveryType } from '@/types/types';
+
+const pendingOrders: DeliveryType[] = [
 	{
 		id: 'PED001',
 		customer: 'João Silva',
@@ -42,7 +33,7 @@ const pendingOrders: OrderType[] = [
 	},
 ];
 
-const inProgressOrders: OrderType[] = [
+const inProgressOrders: DeliveryType[] = [
 	{
 		id: 'PED004',
 		customer: 'Ana Pereira',
@@ -67,7 +58,7 @@ const inProgressOrders: OrderType[] = [
 	},
 ];
 
-const completedOrders: OrderType[] = [
+const completedOrders: DeliveryType[] = [
 	{
 		id: 'PED006',
 		customer: 'Pedro Costa',

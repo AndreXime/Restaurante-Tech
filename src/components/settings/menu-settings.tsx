@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { PlusCircle, Edit, Trash } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { categories, menuItems } from '@/fake-data/settings';
+import { categoriesItems, menuItems } from '@/fake-data/settings';
 
 export function MenuSettings() {
 	return (
@@ -43,7 +43,7 @@ export function MenuSettings() {
 									<tr
 										key={item.id}
 										className="border-t">
-										<td className="p-3">{item.name}</td>
+										<td className="p-3">{item.title}</td>
 										<td className="p-3">{item.category}</td>
 										<td className="p-3">R${item.price.toFixed(2)}</td>
 										<td className="p-3">
@@ -95,11 +95,11 @@ export function MenuSettings() {
 								</tr>
 							</thead>
 							<tbody>
-								{categories.map((category) => (
+								{categoriesItems.map((category) => (
 									<tr
 										key={category.id}
 										className="border-t">
-										<td className="p-3">{category.name}</td>
+										<td className="p-3">{category.label}</td>
 										<td className="p-3">{category.items}</td>
 										<td className="p-3 text-right">
 											<Button

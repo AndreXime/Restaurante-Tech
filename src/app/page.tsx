@@ -1,34 +1,46 @@
 'use client';
 
-import { CategoryFilter } from '../components/menu/category-filter';
-import { FoodGrid } from '../components/menu/food-grid';
-import { Cart } from '../components/menu/cart';
-import { Header } from '../components/layout/menu-header';
+import { Cart, MenuGrid, MenuHeader, SimpleHeader } from '@/components';
+import {
+	TableServicePage,
+	KitchenPage,
+	DeliveryPage,
+	SettingsPage,
+	ReservationsPage,
+	AccountingPage,
+} from '@/components/pages';
 import { MenuContext } from '@/contexts/MenuContext';
-import { useState } from 'react';
+import { useNav } from '@/contexts/NavContext';
 
 export default function MenuPage() {
-	const [switchTab, setswitchTab] = useState(true);
+	const { Tab } = useNav();
+	const isMenuOrCart = Tab == 'Cardápio' || Tab == 'Carrinho';
 
 	return (
 		<div className="flex flex-col h-full">
-			<MenuContext
-				setSwitchTab={setswitchTab}
-				switchTab={switchTab}>
-				<Header />
-				<div className="flex-1 flex overflow-hidden p-2">
-					<div className="flex-1 overflow-auto">
-						{switchTab ? (
-							<>
-								<CategoryFilter />
-								<FoodGrid />
-							</>
-						) : (
-							<Cart />
-						)}
+			{isMenuOrCart && (
+				<MenuContext>
+					<MenuHeader />
+					<div className="flex-1 flex overflow-hidden p-3">
+						<div className="flex-1 overflow-auto">{Tab == 'Cardápio' ? <MenuGrid /> : <Cart />}</div>
+					</div>
+				</MenuContext>
+			)}
+			{!isMenuOrCart && (
+				<div className="flex flex-col h-full">
+					<SimpleHeader title={Tab} />
+					<div className="flex-1 flex overflow-hidden p-4">
+						<div className="flex-1 overflow-auto">
+							{Tab == 'Serviços de Mesa' && <TableServicePage />}
+							{Tab == 'Contabilidade' && <AccountingPage />}
+							{Tab == 'Cozinha' && <KitchenPage />}
+							{Tab == 'Entregas' && <DeliveryPage />}
+							{Tab == 'Reservas' && <ReservationsPage />}
+							{Tab == 'Configurações' && <SettingsPage />}
+						</div>
 					</div>
 				</div>
-			</MenuContext>
+			)}
 		</div>
 	);
 }

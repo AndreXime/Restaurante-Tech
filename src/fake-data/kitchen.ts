@@ -1,16 +1,5 @@
-interface OrderType {
-	id: string;
-	table: string;
-	items: number;
-	time: string;
-	status: 'pendente' | 'preparo' | 'pronto';
-	server: string;
-	orderItems: Array<{
-		name: string;
-		quantity: number;
-		notes?: string;
-	}>;
-}
+import { OrderType } from '@/types/types';
+
 const pendingOrders: OrderType[] = [
 	{
 		id: '001',

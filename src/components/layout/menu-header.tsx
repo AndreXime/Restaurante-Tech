@@ -4,12 +4,11 @@ import { LucideShoppingCart, Menu, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useMenu } from '../../contexts/MenuContext';
-import { useMobile } from '@/contexts/MobileContext';
-import { cartItems } from '@/fake-data/cartItems';
+import { useNav } from '@/contexts/NavContext';
 
-export function Header() {
-	const { selectedTable, setSelectedTable, setSwitchTab, switchTab } = useMenu();
-	const { setMobileMenu } = useMobile();
+export function MenuHeader() {
+	const { selectedTable, setSelectedTable, cartItems } = useMenu();
+	const { setTab, Tab, setMobileMenu } = useNav();
 
 	return (
 		<div className="bg-white p-4 flex items-center gap-5 border-b">
@@ -26,7 +25,7 @@ export function Header() {
 			</div>
 			<div
 				className="relative cursor-pointer"
-				onClick={() => setSwitchTab(!switchTab)}>
+				onClick={() => setTab(Tab == 'Cardápio' ? 'Carrinho' : 'Cardápio')}>
 				<LucideShoppingCart className="w-6 h-6" />
 				{cartItems.length > 0 && (
 					<span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">

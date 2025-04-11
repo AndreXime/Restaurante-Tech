@@ -1,6 +1,7 @@
+import { AccountingType, TransactionsType } from '@/types/types';
 import { DollarSign, ShoppingBag, TrendingDown } from 'lucide-react';
 
-const summaryItems = [
+const summaryItems: AccountingType[] = [
 	{
 		title: 'Vendas Totais',
 		value: 'R$12.456,78',
@@ -35,7 +36,7 @@ const summaryItems = [
 	},
 ];
 
-const transactions = [
+const transactions: TransactionsType[] = [
 	{ id: 'TX001', description: 'Venda - Mesa 4', amount: 78.96, type: 'entrada', date: '15/01/2025 14:30' },
 	{ id: 'TX002', description: 'Venda - Delivery', amount: 56.97, type: 'entrada', date: '15/01/2025 13:45' },
 	{ id: 'TX003', description: 'Pagamento Fornecedor', amount: 345.67, type: 'saída', date: '15/01/2025 11:20' },
