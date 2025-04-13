@@ -12,7 +12,7 @@ import { SettingsTabs } from '@components/settings/settings-tabs';
 import { MenuHeader } from '@/components/layout/menu-header';
 import { Cart } from '@/components/menu/cart';
 import { MenuGrid } from '@/components/menu/Menu-grid';
-
+import { SidebarNav } from './layout/sidebar-nav';
 export {
 	TableGrid,
 	SimpleHeader,
@@ -28,4 +28,5 @@ export {
 	MenuHeader,
 	Cart,
 	MenuGrid,
+	SidebarNav,
 };

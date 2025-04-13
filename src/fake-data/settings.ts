@@ -1,6 +1,5 @@
 import { FoodType, FuncionariosType, GeneralDataType } from '@/types/types';
-import { foodItems } from './food';
-import { categories } from './menu';
+import { categories, foodItems } from './menu';
 
 const generalData: GeneralDataType = {
 	restaurantName: 'Chili Restaurante',

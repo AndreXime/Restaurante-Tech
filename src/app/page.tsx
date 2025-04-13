@@ -14,19 +14,17 @@ import { useNav } from '@/contexts/NavContext';
 
 export default function MenuPage() {
 	const { Tab } = useNav();
-	const isMenuOrCart = Tab == 'Cardápio' || Tab == 'Carrinho';
 
 	return (
 		<div className="flex flex-col h-full">
-			{isMenuOrCart && (
+			{Tab == 'Cardápio' || Tab == 'Carrinho' ? (
 				<MenuContext>
 					<MenuHeader />
 					<div className="flex-1 flex overflow-hidden p-3">
 						<div className="flex-1 overflow-auto">{Tab == 'Cardápio' ? <MenuGrid /> : <Cart />}</div>
 					</div>
 				</MenuContext>
-			)}
-			{!isMenuOrCart && (
+			) : (
 				<div className="flex flex-col h-full">
 					<SimpleHeader title={Tab} />
 					<div className="flex-1 flex overflow-hidden p-4">

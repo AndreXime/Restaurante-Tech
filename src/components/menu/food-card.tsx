@@ -49,7 +49,7 @@ export function FoodCard({ id, image, title, price, discount, type }: FoodCardPr
 					alt={title}
 					width={500}
 					height={500}
-					className="w-full h-45 object-cover"
+					className="w-full h-65 object-cover"
 				/>
 				{discount && (
 					<div className="absolute top-2 left-2 bg-yellow-400 text-black px-2 py-1 rounded-md text-xs font-medium">

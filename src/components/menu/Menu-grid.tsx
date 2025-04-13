@@ -1,6 +1,6 @@
-import { foodItems } from '@/fake-data/food';
+'use client';
 import { FoodCard } from './food-card';
-import { categories } from '@/fake-data/menu';
+import { categories, foodItems } from '@/fake-data/menu';
 import { useState } from 'react';
 import { useMenu } from '@/contexts/MenuContext';
 

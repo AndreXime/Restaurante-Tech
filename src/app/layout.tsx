@@ -1,9 +1,8 @@
-import type { ReactNode } from 'react';
 import '../app/globals.css';
-
-import { SidebarNav } from '../components/layout/sidebar-nav';
-import type { Metadata } from 'next';
+import { SidebarNav } from '@/components';
 import { NavProvider } from '@/contexts/NavContext';
+import type { ReactNode } from 'react';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
 	title: 'Restaurante Tech',
