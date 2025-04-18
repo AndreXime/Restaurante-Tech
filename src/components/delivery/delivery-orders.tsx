@@ -27,7 +27,7 @@ export function DeliveryOrders() {
 
 			<TabsContent
 				value="pending"
-				className="space-y-4">
+				className="grid grid-cols-2 gap-4">
 				{pendingOrders.map((order) => (
 					<DeliveryOrderCard
 						key={order.id}
@@ -38,7 +38,7 @@ export function DeliveryOrders() {
 
 			<TabsContent
 				value="inProgress"
-				className="space-y-4">
+				className="grid grid-cols-2 gap-4">
 				{inProgressOrders.map((order) => (
 					<DeliveryOrderCard
 						key={order.id}
@@ -49,7 +49,7 @@ export function DeliveryOrders() {
 
 			<TabsContent
 				value="completed"
-				className="space-y-4">
+				className="grid grid-cols-2 gap-4">
 				{completedOrders.map((order) => (
 					<DeliveryOrderCard
 						key={order.id}

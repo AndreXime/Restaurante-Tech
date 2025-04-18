@@ -1,17 +1,6 @@
 'use client';
 
-import {
-	Menu,
-	TableIcon as TableBar,
-	CalendarRange,
-	Truck,
-	Calculator,
-	Settings,
-	LogOut,
-	ChefHat,
-	CookingPot,
-	X,
-} from 'lucide-react';
+import { Menu, TableIcon as TableBar, Truck, Calculator, Settings, LogOut, ChefHat, CookingPot, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNav } from '@/contexts/NavContext';
 
@@ -19,7 +8,6 @@ const navItems = [
 	{ icon: Menu, label: 'Cardápio', path: '/' },
 	{ icon: TableBar, label: 'Serviços de Mesa', path: '/servicos-mesa' },
 	{ icon: ChefHat, label: 'Cozinha', path: '/cozinha' },
-	{ icon: CalendarRange, label: 'Reservas', path: '/reservas' },
 	{ icon: Truck, label: 'Entregas', path: '/entrega' },
 	{ icon: Calculator, label: 'Contabilidade', path: '/contabilidade' },
 	{ icon: Settings, label: 'Configurações', path: '/configuracoes' },

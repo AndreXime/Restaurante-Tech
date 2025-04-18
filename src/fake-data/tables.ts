@@ -8,8 +8,8 @@ const tables: TableType[] = [
 	{ id: 5, number: 'Mesa 5', status: 'livre', guests: 0, time: '', server: '' },
 	{ id: 6, number: 'Mesa 6', status: 'ocupada', guests: 6, time: '14:15', server: 'Ana Pereira' },
 	{ id: 7, number: 'Mesa 7', status: 'livre', guests: 0, time: '', server: '' },
-	{ id: 8, number: 'Mesa 8', status: 'reservada', guests: 4, time: '16:30', server: 'Pedro Costa' },
-	{ id: 9, number: 'Mesa 9', status: 'ocupada', guests: 2, time: '13:30', server: 'Lucia Ferreira' },
+	{ id: 8, number: 'Mesa 8', status: 'livre', guests: 0, time: '', server: '' },
+	{ id: 9, number: 'Mesa 9', status: 'livre', guests: 0, time: '', server: '' },
 ];
 
 export { tables };

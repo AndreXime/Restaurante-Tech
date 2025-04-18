@@ -1,14 +1,7 @@
 'use client';
 
 import { Cart, MenuGrid, MenuHeader, SimpleHeader } from '@/components';
-import {
-	TableServicePage,
-	KitchenPage,
-	DeliveryPage,
-	SettingsPage,
-	ReservationsPage,
-	AccountingPage,
-} from '@/components/pages';
+import { TableServicePage, KitchenPage, DeliveryPage, SettingsPage, AccountingPage } from '@/components/pages';
 import { MenuContext } from '@/contexts/MenuContext';
 import { useNav } from '@/contexts/NavContext';
 
@@ -33,7 +26,6 @@ export default function MenuPage() {
 							{Tab == 'Contabilidade' && <AccountingPage />}
 							{Tab == 'Cozinha' && <KitchenPage />}
 							{Tab == 'Entregas' && <DeliveryPage />}
-							{Tab == 'Reservas' && <ReservationsPage />}
 							{Tab == 'Configurações' && <SettingsPage />}
 						</div>
 					</div>
