@@ -5,12 +5,12 @@ import { Button } from '@/components/ui/button';
 import { useNav } from '@/contexts/NavContext';
 
 const navItems = [
-	{ icon: Menu, label: 'Cardápio', path: '/' },
-	{ icon: TableBar, label: 'Serviços de Mesa', path: '/servicos-mesa' },
-	{ icon: ChefHat, label: 'Cozinha', path: '/cozinha' },
-	{ icon: Truck, label: 'Entregas', path: '/entrega' },
-	{ icon: Calculator, label: 'Contabilidade', path: '/contabilidade' },
-	{ icon: Settings, label: 'Configurações', path: '/configuracoes' },
+	{ icon: Menu, label: 'Cardápio' },
+	{ icon: TableBar, label: 'Serviços de Mesa' },
+	{ icon: ChefHat, label: 'Cozinha' },
+	{ icon: Truck, label: 'Entregas' },
+	{ icon: Calculator, label: 'Contabilidade' },
+	{ icon: Settings, label: 'Configurações' },
 ];
 
 export function SidebarNav() {
@@ -32,7 +32,7 @@ export function SidebarNav() {
 								setTab(item.label);
 							}}
 							className={`w-full justify-start hover:bg-green-200 ${
-								Tab === item.path ? 'bg-green-50 text-green-600' : 'text-gray-600'
+								Tab === item.label ? 'bg-green-50 text-green-600' : 'text-gray-600'
 							}`}>
 							<item.icon className="mr-2 h-4 w-4" />
 							{item.label}

@@ -14,18 +14,24 @@ interface FoodCardProps {
 }
 
 export function FoodCard({ id, image, title, price, discount, type }: FoodCardProps) {
-	const { cartItems, setCartItems } = useMenu();
+	const { selectedTable, setSelectedTable } = useMenu();
 
 	// Encontra o item pelo id para obter a quantidade atual
-	const existingItem = cartItems.find((item) => item.id === id);
+	const existingItem = selectedTable.products.find((item) => item.id === id);
 	const qtd = existingItem ? existingItem.quantity : 0;
 
 	// Função para incrementar a quantidade
 	const handleIncrease = () => {
 		if (existingItem) {
-			setCartItems(cartItems.map((item) => (item.id === id ? { ...item, quantity: item.quantity + 1 } : item)));
+			setSelectedTable((prev) => ({
+				...prev,
+				products: prev.products.map((item) => (item.id === id ? { ...item, quantity: item.quantity + 1 } : item)),
+			}));
 		} else {
-			setCartItems([...cartItems, { id, image, title, price, quantity: 1 }]);
+			setSelectedTable((prev) => ({
+				...prev,
+				products: [...prev.products, { id, image, title, price, quantity: 1 }],
+			}));
 		}
 	};
 
@@ -34,10 +40,13 @@ export function FoodCard({ id, image, title, price, discount, type }: FoodCardPr
 		if (!existingItem) return;
 		if (existingItem.quantity === 1) {
 			// Remove o item caso a quantidade seja 1
-			setCartItems(cartItems.filter((item) => item.id !== id));
+			setSelectedTable((prev) => ({ ...prev, products: prev.products.filter((item) => item.id !== id) }));
 		} else {
 			// Diminui a quantidade
-			setCartItems(cartItems.map((item) => (item.id === id ? { ...item, quantity: item.quantity - 1 } : item)));
+			setSelectedTable((prev) => ({
+				...prev,
+				products: prev.products.map((item) => (item.id === id ? { ...item, quantity: item.quantity - 1 } : item)),
+			}));
 		}
 	};
 

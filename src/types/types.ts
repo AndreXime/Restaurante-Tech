@@ -10,6 +10,12 @@ export interface FoodType {
 	status: string;
 	type: 'Veg' | 'Não Veg';
 }
+export interface TablesType {
+	mesaNome: string;
+	clienteNome: string;
+	products: FoodCartType[];
+}
+
 export interface FoodCartType {
 	id: number;
 	image: string;

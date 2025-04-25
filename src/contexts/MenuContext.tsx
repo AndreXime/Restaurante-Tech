@@ -1,6 +1,6 @@
 'use client';
 
-import { FoodCartType } from '@/types/types';
+import { TablesType } from '@/types/types';
 import {
 	createContext,
 	type Dispatch,
@@ -10,60 +10,58 @@ import {
 	type ReactNode,
 	useEffect,
 } from 'react';
+import { Mesas } from '@/fake-data/menu';
 
 type TableContextType = {
-	selectedTable: string;
-	setSelectedTable: (table: string) => void;
-	customerName: string;
-	setCustomerName: (name: string) => void;
-	cartItems: FoodCartType[];
-	setCartItems: Dispatch<SetStateAction<FoodCartType[]>>;
+	selectedTable: TablesType;
+	setSelectedTable: Dispatch<SetStateAction<TablesType>>;
 	searchItem: string;
 	setSearchItem: Dispatch<SetStateAction<string>>;
+	Tables: TablesType[];
+	setTables: Dispatch<SetStateAction<TablesType[]>>;
 };
 
 const TableContext = createContext<TableContextType | undefined>(undefined);
 
 export function MenuContext({ children }: { children: ReactNode }) {
-	const [selectedTable, setSelectedTable] = useState('1');
-	const [customerName, setCustomerName] = useState('Floyd Miles');
-	const [cartItems, setCartItems] = useState<FoodCartType[]>([]);
 	const [searchItem, setSearchItem] = useState('');
+	const [selectedTable, setSelectedTable] = useState(Mesas[0]);
+	const [Tables, setTables] = useState(Mesas);
 
 	// Recupera os valores do localStorage ao montar o componente
 	useEffect(() => {
-		const savedSelectedTable = localStorage.getItem('selectedTable');
-		const savedCustomerName = localStorage.getItem('customerName');
-		const savedCartItems = localStorage.getItem('cartItems');
+		const savedTables = localStorage.getItem('tables');
 
-		if (savedSelectedTable) setSelectedTable(savedSelectedTable);
-		if (savedCustomerName) setCustomerName(savedCustomerName);
-		if (savedCartItems) {
+		if (savedTables) {
 			try {
-				setCartItems(JSON.parse(savedCartItems));
+				setTables(JSON.parse(savedTables));
 			} catch (error) {
 				console.error('Erro ao parsear cartItems:', error);
 			}
 		}
 	}, []);
 
+	// Sincroniza selectedTable com Tables ao mudar
 	useEffect(() => {
-		localStorage.setItem('selectedTable', selectedTable);
-		localStorage.setItem('customerName', customerName);
-		localStorage.setItem('cartItems', JSON.stringify(cartItems));
-	}, [selectedTable, customerName, cartItems]);
+		setTables((prevTables) =>
+			prevTables.map((table) => (table.mesaNome === selectedTable.mesaNome ? selectedTable : table))
+		);
+	}, [selectedTable]);
+
+	// Salva tables com qualquer alteração
+	useEffect(() => {
+		localStorage.setItem('tables', JSON.stringify(Tables));
+	}, [Tables]);
 
 	return (
 		<TableContext.Provider
 			value={{
 				selectedTable,
 				setSelectedTable,
-				customerName,
-				setCustomerName,
-				cartItems,
-				setCartItems,
 				searchItem,
 				setSearchItem,
+				Tables,
+				setTables,
 			}}>
 			{children}
 		</TableContext.Provider>

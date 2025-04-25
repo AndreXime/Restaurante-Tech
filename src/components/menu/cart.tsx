@@ -10,16 +10,19 @@ import { Label } from '@/components/ui/label';
 import Image from 'next/image';
 
 export function Cart() {
-	const { selectedTable, customerName, setCustomerName, cartItems } = useMenu();
-	const [tempCustomerName, setTempCustomerName] = useState(customerName);
+	const { selectedTable, setSelectedTable, setTables } = useMenu();
+	const [tempCustomerName, setTempCustomerName] = useState(selectedTable.clienteNome);
 	const [dialogOpen, setDialogOpen] = useState(false);
 
-	const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+	const subtotal = selectedTable.products.reduce((acc, item) => acc + item.price * item.quantity, 0);
 	const tax = subtotal * 0.05;
 	const total = subtotal + tax;
 
 	const handleSaveCustomer = () => {
-		setCustomerName(tempCustomerName);
+		setSelectedTable({ ...selectedTable, clienteNome: tempCustomerName });
+		setTables((prev) =>
+			prev.map((item) => (item.mesaNome === selectedTable.mesaNome ? { ...item, clienteNome: tempCustomerName } : item))
+		);
 		setDialogOpen(false);
 	};
 
@@ -28,8 +31,8 @@ export function Cart() {
 			<div className="p-4 border-b flex justify-between items-center">
 				<div>
 					<div className="flex items-baseline justify-center gap-3">
-						<h2 className="text-xl font-bold">Mesa {selectedTable}</h2>
-						<span className="text-gray-500 text-sm">Cliente: {customerName}</span>
+						<h2 className="text-xl font-bold">Mesa {selectedTable.mesaNome}</h2>
+						<span className="text-gray-500 text-sm">Cliente: {selectedTable.clienteNome}</span>
 					</div>
 				</div>
 				<Dialog
@@ -67,8 +70,10 @@ export function Cart() {
 			</div>
 
 			<div className="flex-1 overflow-auto p-4">
-				{cartItems.length == 0 && <h2 className="text-xl font-bold text-center">Nenhum produto foi adicionado</h2>}
-				{cartItems.map((item, index) => (
+				{selectedTable.products.length == 0 && (
+					<h2 className="text-xl font-bold text-center">Nenhum produto foi adicionado</h2>
+				)}
+				{selectedTable.products.map((item, index) => (
 					<div
 						key={index}
 						className="flex items-center gap-3 mb-4">
