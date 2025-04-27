@@ -1,24 +1,9 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Clock, User, Check } from 'lucide-react';
+import { KitchenOrderType } from '@/types/types';
 
-interface OrderCardProps {
-	order: {
-		id: string;
-		table: string;
-		items: number;
-		time: string;
-		status: 'pendente' | 'preparo' | 'pronto';
-		server: string;
-		orderItems: Array<{
-			name: string;
-			quantity: number;
-			notes?: string;
-		}>;
-	};
-}
-
-export function OrderCard({ order }: OrderCardProps) {
+export function OrderCard({ order }: { order: KitchenOrderType }) {
 	const statusColors = {
 		pendente: 'bg-yellow-100 text-yellow-600',
 		preparo: 'bg-orange-100 text-orange-600',

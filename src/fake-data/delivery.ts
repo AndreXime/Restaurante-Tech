@@ -1,6 +1,6 @@
 import { DeliveryType } from '@/types/types';
 
-const pendingOrders: DeliveryType[] = [
+export const deliveryOrders: DeliveryType[] = [
 	{
 		id: 'PED001',
 		customer: 'João Silva',
@@ -21,19 +21,7 @@ const pendingOrders: DeliveryType[] = [
 		time: '15:45',
 		status: 'pendente',
 	},
-	{
-		id: 'PED003',
-		customer: 'Carlos Santos',
-		address: 'Rua Augusta, 789',
-		phone: '(11) 99876-5432',
-		items: 4,
-		total: 78.96,
-		time: '16:00',
-		status: 'pendente',
-	},
-];
 
-const inProgressOrders: DeliveryType[] = [
 	{
 		id: 'PED004',
 		customer: 'Ana Pereira',
@@ -56,9 +44,7 @@ const inProgressOrders: DeliveryType[] = [
 		status: 'em andamento',
 		deliveryPerson: 'Carlos Motoboy',
 	},
-];
 
-const completedOrders: DeliveryType[] = [
 	{
 		id: 'PED006',
 		customer: 'Pedro Costa',
@@ -82,5 +68,3 @@ const completedOrders: DeliveryType[] = [
 		deliveryPerson: 'Carlos Motoboy',
 	},
 ];
-
-export { pendingOrders, completedOrders, inProgressOrders };

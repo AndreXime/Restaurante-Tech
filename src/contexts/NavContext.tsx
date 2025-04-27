@@ -7,15 +7,22 @@ type NavContextType = {
 	setMobileMenu: Dispatch<SetStateAction<boolean>>;
 	Tab: string;
 	setTab: Dispatch<SetStateAction<string>>;
+	searchItem: string;
+	setSearchItem: Dispatch<SetStateAction<string>>;
 };
 
 const MobileContext = createContext<NavContextType | undefined>(undefined);
 
 export function NavProvider({ children }: { children: ReactNode }) {
 	const [mobileMenu, setMobileMenu] = useState(false);
+	const [searchItem, setSearchItem] = useState('');
 	const [Tab, setTab] = useState('Cardápio');
 
-	return <MobileContext.Provider value={{ mobileMenu, setMobileMenu, Tab, setTab }}>{children}</MobileContext.Provider>;
+	return (
+		<MobileContext.Provider value={{ searchItem, setSearchItem, mobileMenu, setMobileMenu, Tab, setTab }}>
+			{children}
+		</MobileContext.Provider>
+	);
 }
 
 export function useNav() {

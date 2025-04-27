@@ -1,11 +1,13 @@
 import { Card, CardContent } from '@/components/ui/card';
+import { useData } from '@/contexts/DataContext';
 import { TrendingUp, TrendingDown } from 'lucide-react';
-import { summaryItems } from '@/fake-data/accounting';
 
 export function FinancialSummary() {
+	const { Contabilidade } = useData();
+
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-			{summaryItems.map((item, index) => (
+			{Contabilidade.resumo.map((item, index) => (
 				<Card key={index}>
 					<CardContent className="p-4">
 						<div className="flex justify-between items-start">

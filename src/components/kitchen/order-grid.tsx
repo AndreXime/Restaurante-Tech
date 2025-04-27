@@ -1,8 +1,14 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { OrderCard } from './order-card';
-import { pendingOrders, inProgressOrders, readyOrders } from '@/fake-data/kitchen';
+import { useData } from '@/contexts/DataContext';
 
 export function OrderGrid() {
+	const { Cozinha } = useData();
+
+	const pendingOrders = Cozinha.filter((order) => order.status == 'pendente');
+	const inProgressOrders = Cozinha.filter((order) => order.status == 'preparo');
+	const readyOrders = Cozinha.filter((order) => order.status == 'pronto');
+
 	return (
 		<Tabs defaultValue="pending">
 			<TabsList className="mb-4">

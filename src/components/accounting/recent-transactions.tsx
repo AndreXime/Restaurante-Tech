@@ -1,7 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { transactions } from '@/fake-data/accounting';
+import { useData } from '@/contexts/DataContext';
 
 export function RecentTransactions() {
+	const { Contabilidade } = useData();
+
 	return (
 		<Card>
 			<CardHeader className="pb-2">
@@ -9,7 +11,7 @@ export function RecentTransactions() {
 			</CardHeader>
 			<CardContent>
 				<div className="space-y-4">
-					{transactions.map((transaction) => (
+					{Contabilidade.transacoes.map((transaction) => (
 						<div
 							key={transaction.id}
 							className="flex justify-between items-center border-b pb-2">

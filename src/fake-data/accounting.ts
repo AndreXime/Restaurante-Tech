@@ -1,7 +1,7 @@
-import { AccountingType, TransactionsType } from '@/types/types';
+import { ResumoAccountingType, TransactionsType } from '@/types/types';
 import { DollarSign, ShoppingBag, TrendingDown } from 'lucide-react';
 
-const summaryItems: AccountingType[] = [
+const summaryItems: ResumoAccountingType[] = [
 	{
 		title: 'Vendas Totais',
 		value: 'R$12.456,78',
@@ -19,7 +19,7 @@ const summaryItems: AccountingType[] = [
 		color: 'bg-blue-100 text-blue-600',
 	},
 	{
-		title: 'Ticket Médio',
+		title: 'Valor Médio por Pedido',
 		value: 'R$36,10',
 		change: '+4,3%',
 		trend: 'up',

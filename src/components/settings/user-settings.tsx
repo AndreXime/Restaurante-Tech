@@ -1,8 +1,11 @@
 import { Button } from '@/components/ui/button';
-import { users } from '@/fake-data/settings';
+import { useData } from '@/contexts/DataContext';
 import { PlusCircle, Edit, Trash } from 'lucide-react';
 
 export function UserSettings() {
+	const { Config } = useData();
+	const Funcionarios = Config.funcionarios;
+
 	return (
 		<div className="space-y-6">
 			<div className="flex justify-between items-center">
@@ -25,7 +28,7 @@ export function UserSettings() {
 						</tr>
 					</thead>
 					<tbody>
-						{users.map((user) => (
+						{Funcionarios.map((user) => (
 							<tr
 								key={user.id}
 								className="border-t">

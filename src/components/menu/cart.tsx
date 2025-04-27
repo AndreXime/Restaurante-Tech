@@ -1,16 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { CreditCard, QrCode, Banknote, Edit2 } from 'lucide-react';
-import { useMenu } from '../../contexts/MenuContext';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { useData } from '../../contexts/DataContext';
+import { Button, Label, Input, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui';
 import Image from 'next/image';
 
 export function Cart() {
-	const { selectedTable, setSelectedTable, setTables } = useMenu();
+	const { selectedTable, setSelectedTable } = useData();
 	const [tempCustomerName, setTempCustomerName] = useState(selectedTable.clienteNome);
 	const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -20,9 +17,6 @@ export function Cart() {
 
 	const handleSaveCustomer = () => {
 		setSelectedTable({ ...selectedTable, clienteNome: tempCustomerName });
-		setTables((prev) =>
-			prev.map((item) => (item.mesaNome === selectedTable.mesaNome ? { ...item, clienteNome: tempCustomerName } : item))
-		);
 		setDialogOpen(false);
 	};
 
@@ -30,8 +24,8 @@ export function Cart() {
 		<div className=" bg-white border-l flex flex-col h-full">
 			<div className="p-4 border-b flex justify-between items-center">
 				<div>
-					<div className="flex items-baseline justify-center gap-3">
-						<h2 className="text-xl font-bold">Mesa {selectedTable.mesaNome}</h2>
+					<div className="flex flex-col md:flex-row items-baseline justify-center gap-3">
+						<h2 className="text-xl font-bold">{selectedTable.mesaNome}</h2>
 						<span className="text-gray-500 text-sm">Cliente: {selectedTable.clienteNome}</span>
 					</div>
 				</div>
@@ -43,7 +37,7 @@ export function Cart() {
 							variant="outline"
 							size="sm">
 							<Edit2 className="h-4 w-4 mr-1" />
-							Cliente
+							Editar cliente
 						</Button>
 					</DialogTrigger>
 					<DialogContent>
@@ -109,6 +103,7 @@ export function Cart() {
 						<span>R${total.toFixed(2)}</span>
 					</div>
 				</div>
+				<h3 className="font-bold text-center pb-3">Opções de Recebimento</h3>
 				<div className="grid grid-cols-3 gap-2 mb-4">
 					<Button
 						variant="outline"
@@ -126,6 +121,7 @@ export function Cart() {
 						Entrega
 					</Button>
 				</div>
+				<h3 className="font-bold text-center pb-3">Metodo de pagamento</h3>
 				<div className="grid grid-cols-3 gap-2 mb-4">
 					<Button
 						variant="outline"

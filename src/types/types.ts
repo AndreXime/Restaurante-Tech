@@ -1,30 +1,39 @@
 import { LucideIcon } from 'lucide-react';
 
-export interface FoodType {
-	id: number;
-	image: string;
-	title: string;
-	price: number;
-	discount?: number;
-	category: string[];
-	status: string;
-	type: 'Veg' | 'Não Veg';
-}
+/* Tipos Complexos que a empresa no geral possuem */
+
+// Para o carrinho e Mesas
 export interface TablesType {
+	id: number;
+	status: 'ocupada' | 'livre' | 'reservada';
+	guests: number;
+	time: string;
+	server: string;
 	mesaNome: string;
 	clienteNome: string;
 	products: FoodCartType[];
 }
 
-export interface FoodCartType {
-	id: number;
-	image: string;
-	title: string;
-	price: number;
-	quantity: number;
+// Para o Cardapio
+export interface CardapioType {
+	categorias: CategoriesType[];
+	pratos: FoodType[];
 }
 
-export interface OrderType {
+// Para configuração
+export interface ConfigType {
+	geralData: GeneralDataType;
+	funcionarios: FuncionariosType[];
+}
+
+// Para contabilidade
+export interface ContabilidadeType {
+	resumo: ResumoAccountingType[];
+	transacoes: TransactionsType[];
+}
+
+// Para Cozinha
+export interface KitchenOrderType {
 	id: string;
 	table: string;
 	items: number;
@@ -37,6 +46,8 @@ export interface OrderType {
 		notes?: string;
 	}>;
 }
+
+// Para Entregas
 export interface DeliveryType {
 	id: string;
 	customer: string;
@@ -49,8 +60,29 @@ export interface DeliveryType {
 	deliveryPerson?: string;
 }
 
-export interface AccountingType {
+/* Tipos auxiliares  */
+
+export interface FoodType {
+	id: number;
+	image: string;
 	title: string;
+	price: number;
+	discount?: number;
+	category: string[];
+	status: string;
+	type: 'Veg' | 'Não Veg';
+}
+
+export interface FoodCartType {
+	id: number;
+	image: string;
+	title: string;
+	price: number;
+	quantity: number;
+}
+
+export interface ResumoAccountingType {
+	title: 'Vendas Totais' | 'Pedidos' | 'Valor Médio por Pedido' | 'Despesas';
 	value: string;
 	change: string;
 	trend: 'up' | 'down';
@@ -71,22 +103,6 @@ export interface CategoriesType {
 	icon: LucideIcon;
 	label: string;
 	items: string;
-}
-export interface ReservationsType {
-	date: string;
-	time: string;
-	name: string;
-	guests: number;
-	table: string;
-}
-
-export interface TableType {
-	id: number;
-	number: string;
-	status: 'ocupada' | 'livre' | 'reservada';
-	guests: number;
-	time: string;
-	server: string;
 }
 
 export interface FuncionariosType {

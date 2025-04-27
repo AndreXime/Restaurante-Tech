@@ -1,8 +1,14 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DeliveryOrderCard } from './delivery-order-card';
-import { completedOrders, inProgressOrders, pendingOrders } from '@/fake-data/delivery';
+import { useData } from '@/contexts/DataContext';
 
 export function DeliveryOrders() {
+	const { Entrega } = useData();
+
+	const pendingOrders = Entrega.filter((order) => order.status == 'pendente');
+	const inProgressOrders = Entrega.filter((order) => order.status == 'em andamento');
+	const completedOrders = Entrega.filter((order) => order.status == 'entregue');
+
 	return (
 		<Tabs defaultValue="pending">
 			<TabsList className="mb-4">
@@ -11,7 +17,7 @@ export function DeliveryOrders() {
 					className="relative">
 					Pendentes
 					<span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-						{pendingOrders.length}
+						{pendingOrders.length ?? 0}
 					</span>
 				</TabsTrigger>
 				<TabsTrigger
@@ -19,7 +25,7 @@ export function DeliveryOrders() {
 					className="relative">
 					Em Andamento
 					<span className="absolute -top-1 -right-1 bg-yellow-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-						{inProgressOrders.length}
+						{inProgressOrders.length ?? 0}
 					</span>
 				</TabsTrigger>
 				<TabsTrigger value="completed">Entregues</TabsTrigger>
@@ -28,7 +34,7 @@ export function DeliveryOrders() {
 			<TabsContent
 				value="pending"
 				className="grid grid-cols-2 gap-4">
-				{pendingOrders.map((order) => (
+				{pendingOrders?.map((order) => (
 					<DeliveryOrderCard
 						key={order.id}
 						order={order}
@@ -39,7 +45,7 @@ export function DeliveryOrders() {
 			<TabsContent
 				value="inProgress"
 				className="grid grid-cols-2 gap-4">
-				{inProgressOrders.map((order) => (
+				{inProgressOrders?.map((order) => (
 					<DeliveryOrderCard
 						key={order.id}
 						order={order}
@@ -50,7 +56,7 @@ export function DeliveryOrders() {
 			<TabsContent
 				value="completed"
 				className="grid grid-cols-2 gap-4">
-				{completedOrders.map((order) => (
+				{completedOrders?.map((order) => (
 					<DeliveryOrderCard
 						key={order.id}
 						order={order}

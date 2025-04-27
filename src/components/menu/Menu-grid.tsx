@@ -1,21 +1,25 @@
 'use client';
 import { FoodCard } from './food-card';
-import { categories, foodItems } from '@/fake-data/menu';
 import { useState } from 'react';
-import { useMenu } from '@/contexts/MenuContext';
+import { useNav } from '@/contexts/NavContext';
+import { useData } from '@/contexts/DataContext';
 
 export function MenuGrid() {
 	const [ActiveCategory, setActiveCategory] = useState('Todos');
-	const { searchItem } = useMenu();
+	const { searchItem } = useNav();
+	const { Cardapio } = useData();
+
 	// Primeiro filtra pela categoria e depois pelo input insensitive
 	const activeItems = (
-		ActiveCategory != 'Todos' ? foodItems.filter((item) => item.category.includes(ActiveCategory)) : foodItems
+		ActiveCategory != 'Todos'
+			? Cardapio.pratos.filter((item) => item.category.includes(ActiveCategory))
+			: Cardapio.pratos
 	).filter((item) => item.title.toLowerCase().includes(searchItem.toLowerCase()));
 
 	return (
 		<>
 			<div className="flex gap-3 mb-4 overflow-x-auto pb-2">
-				{categories.map((category, index) => (
+				{Cardapio.categorias.map((category, index) => (
 					<div
 						onClick={() => setActiveCategory(category.label)}
 						key={index}

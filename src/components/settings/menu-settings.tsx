@@ -1,9 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { PlusCircle, Edit, Trash } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { categoriesItems, menuItems } from '@/fake-data/settings';
+import { useData } from '@/contexts/DataContext';
 
 export function MenuSettings() {
+	const { Cardapio } = useData();
+	const menuItems = Cardapio.pratos;
+	const categories = Cardapio.categorias;
+
 	return (
 		<div className="space-y-6">
 			<div className="flex justify-between items-center">
@@ -95,7 +99,7 @@ export function MenuSettings() {
 								</tr>
 							</thead>
 							<tbody>
-								{categoriesItems.map((category) => (
+								{categories.map((category) => (
 									<tr
 										key={category.id}
 										className="border-t">

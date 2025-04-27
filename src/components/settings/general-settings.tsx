@@ -2,9 +2,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { generalData } from '@/fake-data/settings';
+import { useData } from '@/contexts/DataContext';
 
 export function GeneralSettings() {
+	const { Config } = useData();
+	const generalData = Config.geralData;
+
 	return (
 		<div className="space-y-6">
 			<h2 className="text-xl font-bold">Configurações Gerais</h2>

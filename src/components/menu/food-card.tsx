@@ -2,7 +2,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
-import { useMenu } from '@/contexts/MenuContext';
+import { useData } from '@/contexts/DataContext';
 
 interface FoodCardProps {
 	id: number;
@@ -14,7 +14,7 @@ interface FoodCardProps {
 }
 
 export function FoodCard({ id, image, title, price, discount, type }: FoodCardProps) {
-	const { selectedTable, setSelectedTable } = useMenu();
+	const { selectedTable, setSelectedTable } = useData();
 
 	// Encontra o item pelo id para obter a quantidade atual
 	const existingItem = selectedTable.products.find((item) => item.id === id);

@@ -1,6 +1,6 @@
-import { OrderType } from '@/types/types';
+import { KitchenOrderType } from '@/types/types';
 
-const pendingOrders: OrderType[] = [
+export const KitchenOrders: KitchenOrderType[] = [
 	{
 		id: '001',
 		table: '4',
@@ -26,9 +26,6 @@ const pendingOrders: OrderType[] = [
 			{ name: 'Água Mineral', quantity: 1 },
 		],
 	},
-];
-
-const inProgressOrders: OrderType[] = [
 	{
 		id: '003',
 		table: '6',
@@ -55,9 +52,6 @@ const inProgressOrders: OrderType[] = [
 			{ name: 'Suco de Laranja', quantity: 1 },
 		],
 	},
-];
-
-const readyOrders: OrderType[] = [
 	{
 		id: '005',
 		table: '3',
@@ -71,5 +65,3 @@ const readyOrders: OrderType[] = [
 		],
 	},
 ];
-
-export { readyOrders, inProgressOrders, pendingOrders };

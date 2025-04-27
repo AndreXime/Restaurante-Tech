@@ -1,15 +1,49 @@
-import { TableType } from '@/types/types';
+import { TablesType } from '@/types/types';
 
-const tables: TableType[] = [
-	{ id: 1, number: 'Mesa 1', status: 'ocupada', guests: 4, time: '14:30', server: 'João Silva' },
-	{ id: 2, number: 'Mesa 2', status: 'livre', guests: 0, time: '', server: '' },
-	{ id: 3, number: 'Mesa 3', status: 'reservada', guests: 2, time: '15:00', server: 'Maria Oliveira' },
-	{ id: 4, number: 'Mesa 4', status: 'ocupada', guests: 3, time: '13:45', server: 'Carlos Santos' },
-	{ id: 5, number: 'Mesa 5', status: 'livre', guests: 0, time: '', server: '' },
-	{ id: 6, number: 'Mesa 6', status: 'ocupada', guests: 6, time: '14:15', server: 'Ana Pereira' },
-	{ id: 7, number: 'Mesa 7', status: 'livre', guests: 0, time: '', server: '' },
-	{ id: 8, number: 'Mesa 8', status: 'livre', guests: 0, time: '', server: '' },
-	{ id: 9, number: 'Mesa 9', status: 'livre', guests: 0, time: '', server: '' },
+export const Mesas: TablesType[] = [
+	{
+		id: 1,
+		mesaNome: 'Mesa 1',
+		status: 'ocupada',
+		guests: 4,
+		time: '14:30',
+		server: 'João Silva',
+		clienteNome: '',
+		products: [],
+	},
+	{ id: 2, mesaNome: 'Mesa 2', clienteNome: '', status: 'livre', guests: 0, time: '', server: '', products: [] },
+	{
+		id: 3,
+		mesaNome: 'Mesa 3',
+		clienteNome: '',
+		status: 'reservada',
+		guests: 2,
+		time: '15:00',
+		server: 'Maria Oliveira',
+		products: [],
+	},
+	{
+		id: 4,
+		mesaNome: 'Mesa 4',
+		status: 'ocupada',
+		guests: 3,
+		time: '13:45',
+		server: 'Carlos Santos',
+		clienteNome: '',
+		products: [],
+	},
+	{ id: 5, mesaNome: 'Mesa 5', status: 'livre', guests: 0, time: '', server: '', clienteNome: '', products: [] },
+	{
+		id: 6,
+		mesaNome: 'Mesa 6',
+		status: 'ocupada',
+		guests: 6,
+		time: '14:15',
+		server: 'Ana Pereira',
+		clienteNome: '',
+		products: [],
+	},
+	{ id: 7, mesaNome: 'Mesa 7', status: 'livre', guests: 0, time: '', server: '', clienteNome: '', products: [] },
+	{ id: 8, mesaNome: 'Mesa 8', status: 'livre', guests: 0, time: '', server: '', clienteNome: '', products: [] },
+	{ id: 9, mesaNome: 'Mesa 9', status: 'livre', guests: 0, time: '', server: '', clienteNome: '', products: [] },
 ];
-
-export { tables };

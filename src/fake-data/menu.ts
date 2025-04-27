@@ -1,4 +1,4 @@
-import { CategoriesType, FoodCartType, FoodType, TablesType } from '@/types/types';
+import { CategoriesType, FoodType } from '@/types/types';
 import { Grid, Coffee, UtensilsCrossed, ChefHat, Sandwich, GlassWater, Fish, Pizza, Soup } from 'lucide-react';
 
 export const categories: CategoriesType[] = [
@@ -11,18 +11,6 @@ export const categories: CategoriesType[] = [
 	{ id: 7, icon: Fish, label: 'Frutos do mar', items: '1 Item' }, // 1 Fruto do mar
 	{ id: 8, icon: Pizza, label: 'Pizzas', items: '1 Item' }, // 1 Pizza
 	{ id: 9, icon: Soup, label: 'Sopas', items: '1 Item' }, // 1 Sopa
-];
-
-export const Mesas: TablesType[] = [
-	{ mesaNome: 'Mesa 1', clienteNome: 'Miles', products: [] as FoodCartType[] },
-	{ mesaNome: 'Mesa 2', clienteNome: 'Andrea', products: [] as FoodCartType[] },
-	{ mesaNome: 'Mesa 3', clienteNome: 'Rasputin', products: [] as FoodCartType[] },
-	{ mesaNome: 'Mesa 4', clienteNome: 'Livre', products: [] as FoodCartType[] },
-	{ mesaNome: 'Mesa 5', clienteNome: 'Livre', products: [] as FoodCartType[] },
-	{ mesaNome: 'Mesa 6', clienteNome: 'Livre', products: [] as FoodCartType[] },
-	{ mesaNome: 'Mesa 7', clienteNome: 'Livre', products: [] as FoodCartType[] },
-	{ mesaNome: 'Mesa 8', clienteNome: 'Livre', products: [] as FoodCartType[] },
-	{ mesaNome: 'Mesa 9', clienteNome: 'Elon musk', products: [] as FoodCartType[] },
 ];
 
 export const foodItems: FoodType[] = [
