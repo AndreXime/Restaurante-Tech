@@ -1,15 +1,7 @@
 'use client';
 
-import { createContext, type Dispatch, type SetStateAction, useContext, useState, type ReactNode } from 'react';
-
-type NavContextType = {
-	mobileMenu: boolean;
-	setMobileMenu: Dispatch<SetStateAction<boolean>>;
-	Tab: string;
-	setTab: Dispatch<SetStateAction<string>>;
-	searchItem: string;
-	setSearchItem: Dispatch<SetStateAction<string>>;
-};
+import { createContext, useContext, useState, type ReactNode } from 'react';
+import NavContextType from '@/types/NavContextType';
 
 const MobileContext = createContext<NavContextType | undefined>(undefined);
 

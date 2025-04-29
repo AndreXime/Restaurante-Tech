@@ -7,7 +7,7 @@ import { useData } from '../../contexts/DataContext';
 import { useNav } from '@/contexts/NavContext';
 
 export function MenuHeader() {
-	const { selectedTable, setSelectedTable, Mesas } = useData();
+	const { mesaSelecionada, setMesaSelecionada, Mesas } = useData();
 	const { setTab, Tab, setMobileMenu, setSearchItem } = useNav();
 
 	return (
@@ -29,17 +29,17 @@ export function MenuHeader() {
 						className="relative cursor-pointer"
 						onClick={() => setTab(Tab == 'Cardápio' ? 'Carrinho' : 'Cardápio')}>
 						<LucideShoppingCart className="w-6 h-6" />
-						{selectedTable.products.length > 0 && (
+						{mesaSelecionada.products.length > 0 && (
 							<span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-								{selectedTable.products.length}
+								{mesaSelecionada.products.length}
 							</span>
 						)}
 					</div>
 				</div>
 				<div className="flex items-center gap-2">
 					<Select
-						value={selectedTable.mesaNome}
-						onValueChange={(mesaNome) => setSelectedTable(Mesas.find((table) => table.mesaNome === mesaNome)!)}>
+						value={mesaSelecionada.mesaNome}
+						onValueChange={(mesaNome) => setMesaSelecionada(Mesas.find((table) => table.mesaNome === mesaNome)!)}>
 						<SelectTrigger>
 							<SelectValue placeholder="Selecionar Mesa" />
 						</SelectTrigger>

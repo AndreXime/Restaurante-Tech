@@ -11,4 +11,5 @@ export type StoreData = {
 	entrega: Template['entrega'];
 	contabilidade: Template['contabilidade'];
 	cozinha: Template['cozinha'];
+	mesaSelecionada: Template['mesaSelecionada'];
 };

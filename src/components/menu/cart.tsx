@@ -7,16 +7,16 @@ import { Button, Label, Input, Dialog, DialogContent, DialogHeader, DialogTitle,
 import Image from 'next/image';
 
 export function Cart() {
-	const { selectedTable, setSelectedTable } = useData();
-	const [tempCustomerName, setTempCustomerName] = useState(selectedTable.clienteNome);
+	const { mesaSelecionada, setMesaSelecionada } = useData();
+	const [tempCustomerName, setTempCustomerName] = useState(mesaSelecionada.clienteNome);
 	const [dialogOpen, setDialogOpen] = useState(false);
 
-	const subtotal = selectedTable.products.reduce((acc, item) => acc + item.price * item.quantity, 0);
+	const subtotal = mesaSelecionada.products.reduce((acc, item) => acc + item.price * item.quantity, 0);
 	const tax = subtotal * 0.05;
 	const total = subtotal + tax;
 
 	const handleSaveCustomer = () => {
-		setSelectedTable({ ...selectedTable, clienteNome: tempCustomerName });
+		setMesaSelecionada({ ...mesaSelecionada, clienteNome: tempCustomerName });
 		setDialogOpen(false);
 	};
 
@@ -25,8 +25,8 @@ export function Cart() {
 			<div className="p-4 border-b flex justify-between items-center">
 				<div>
 					<div className="flex flex-col md:flex-row items-baseline justify-center gap-3">
-						<h2 className="text-xl font-bold">{selectedTable.mesaNome}</h2>
-						<span className="text-gray-500 text-sm">Cliente: {selectedTable.clienteNome}</span>
+						<h2 className="text-xl font-bold">{mesaSelecionada.mesaNome}</h2>
+						<span className="text-gray-500 text-sm">Cliente: {mesaSelecionada.clienteNome}</span>
 					</div>
 				</div>
 				<Dialog
@@ -64,10 +64,10 @@ export function Cart() {
 			</div>
 
 			<div className="flex-1 overflow-auto p-4">
-				{selectedTable.products.length == 0 && (
+				{mesaSelecionada.products.length == 0 && (
 					<h2 className="text-xl font-bold text-center">Nenhum produto foi adicionado</h2>
 				)}
-				{selectedTable.products.map((item, index) => (
+				{mesaSelecionada.products.map((item, index) => (
 					<div
 						key={index}
 						className="flex items-center gap-3 mb-4">

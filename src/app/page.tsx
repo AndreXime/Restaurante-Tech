@@ -19,7 +19,7 @@ export default function MenuPage() {
 						</div>
 					</>
 				) : (
-					<div className="flex flex-col h-full">
+					<>
 						<SimpleHeader title={Tab} />
 						<div className="flex-1 flex overflow-hidden p-4">
 							<div className="flex-1 overflow-auto">
@@ -30,7 +30,7 @@ export default function MenuPage() {
 								{Tab == 'Configurações' && <SettingsPage />}
 							</div>
 						</div>
-					</div>
+					</>
 				)}
 			</div>
 		</DataProvider>

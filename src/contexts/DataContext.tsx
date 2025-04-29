@@ -1,50 +1,39 @@
 'use client';
 
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
-import { carregarTudo, salvarData } from '@/lib/localDatabase';
-import { TableContextType } from '@/types/TableContextType';
+import { restaurantVazio } from '@/fake-data/RestauranteTemplate';
+import SalvarDados from '@/hooks/SalvarDados';
+import { carregarTudo } from '@/lib/localDatabase';
+import DataContextType from '@/types/DataContextType';
 import { CardapioType, ConfigType, ContabilidadeType, DeliveryType, KitchenOrderType, TablesType } from '@/types/types';
 import { createContext, useContext, useState, useEffect } from 'react';
 
-const DataContext = createContext<TableContextType | undefined>(undefined);
+const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export function DataProvider({ children }: { children: React.ReactNode }) {
+	const [Contabilidade, setContabilidade] = useState<ContabilidadeType>(restaurantVazio.contabilidade);
+	const [Config, setConfig] = useState<ConfigType>(restaurantVazio.config);
+	const [Cardapio, setCardapio] = useState<CardapioType>(restaurantVazio.cardapio);
+	const [mesaSelecionada, setMesaSelecionada] = useState<TablesType>(restaurantVazio.mesaSelecionada);
 	const [Mesas, setMesas] = useState<TablesType[]>([]);
-	const [Contabilidade, setContabilidade] = useState<ContabilidadeType>({ resumo: [], transacoes: [] });
-	const [Config, setConfig] = useState<ConfigType>({
-		geralData: { restaurantName: '', address: '', phone: '', email: '', taxRate: '', currency: '' },
-		funcionarios: [],
-	});
 	const [Cozinha, setCozinha] = useState<KitchenOrderType[]>([]);
 	const [Entrega, setEntrega] = useState<DeliveryType[]>([]);
-	const [Cardapio, setCardapio] = useState<CardapioType>({ categorias: [], pratos: [] });
 
 	const [loading, setLoading] = useState(true);
 
-	const [selectedTable, setSelectedTable] = useState<TablesType>({
-		id: 0,
-		guests: 0,
-		status: 'livre',
-		time: '',
-		server: '',
-		mesaNome: '',
-		clienteNome: '',
-		products: [],
-	});
-
-	// Recupera os valores do bd local ao montar o componente
+	// Recupera os valores do indexedDB ao iniciar o dashboard
 	useEffect(() => {
 		async function carregarDados() {
 			try {
 				const dados = await carregarTudo();
-				// O operador ?? é usado porque pode retornar undefined e é melhor ter a estrutura vazia doq isso
-				setMesas(dados.mesas ?? Mesas);
-				setContabilidade(dados.contabilidade ?? Contabilidade);
-				setConfig(dados.config ?? Config);
-				setCozinha(dados.cozinha ?? Cozinha);
-				setEntrega(dados.entrega ?? Entrega);
-				setCardapio(dados.cardapio ?? Cardapio);
-				setSelectedTable(dados.mesas[0] ?? selectedTable);
+				// Se for undefined manter o valor padrao
+				setMesas((prev) => dados.mesas ?? prev);
+				setContabilidade((prev) => dados.contabilidade ?? prev);
+				setConfig((prev) => dados.config ?? prev);
+				setCozinha((prev) => dados.cozinha ?? prev);
+				setEntrega((prev) => dados.entrega ?? prev);
+				setCardapio((prev) => dados.cardapio ?? prev);
+				setMesaSelecionada((prev) => dados.mesaSelecionada ?? prev);
 			} catch (err) {
 				throw Error('Erro carregando dados do IndexedDB' + err);
 			} finally {
@@ -55,29 +44,6 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 		carregarDados();
 	}, []);
 
-	// Sincroniza selectedTable com Tables ao mudar
-	useEffect(() => {
-		if (!selectedTable || !Mesas) return;
-
-		setMesas(
-			(prevTables) =>
-				prevTables ? prevTables.map((table) => (table.mesaNome === selectedTable.mesaNome ? selectedTable : table)) : [] // Se prevTables for undefined, devolve um array vazio
-		);
-	}, [selectedTable]);
-
-	// Salva os dados com qualquer alteração
-	useEffect(() => {
-		const salvarDados = async () => {
-			if (Mesas) await salvarData('mesas', Mesas);
-			if (Contabilidade) await salvarData('contabilidade', Contabilidade);
-			if (Config) await salvarData('config', Config);
-			if (Cozinha) await salvarData('cozinha', Cozinha);
-			if (Entrega) await salvarData('entrega', Entrega);
-			if (Cardapio) await salvarData('cardapio', Cardapio);
-		};
-		salvarDados();
-	}, [Mesas, Contabilidade, Config, Cozinha, Entrega, Cardapio]);
-
 	if (loading) {
 		return <LoadingSpinner />;
 	}
@@ -85,14 +51,14 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 	return (
 		<DataContext.Provider
 			value={{
-				selectedTable,
+				mesaSelecionada,
 				Mesas,
 				Config,
 				Entrega,
 				Contabilidade,
 				Cardapio,
 				Cozinha,
-				setSelectedTable,
+				setMesaSelecionada,
 				setMesas,
 				setConfig,
 				setCardapio,
@@ -100,6 +66,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 				setCozinha,
 				setEntrega,
 			}}>
+			<SalvarDados />
 			{children}
 		</DataContext.Provider>
 	);
@@ -108,7 +75,7 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 export function useData() {
 	const context = useContext(DataContext);
 	if (context === undefined) {
-		throw new Error('useTable must be used within a DataProvider');
+		throw new Error('useData must be used within a DataProvider');
 	}
 	return context;
 }

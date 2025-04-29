@@ -20,6 +20,7 @@ export interface Template {
 	entrega: DeliveryType[];
 	config: ConfigType;
 	contabilidade: ContabilidadeType;
+	mesaSelecionada: TablesType;
 }
 
 export const Empresa: Template = {
@@ -29,9 +30,10 @@ export const Empresa: Template = {
 	entrega: deliveryOrders,
 	contabilidade: { resumo: summaryItems, transacoes: transactions },
 	cozinha: KitchenOrders,
+	mesaSelecionada: Mesas[0],
 };
 
-export const empresaVazia: Template = {
+export const restaurantVazio: Template = {
 	cardapio: { categorias: [], pratos: [] },
 	mesas: [],
 	config: {
@@ -41,4 +43,14 @@ export const empresaVazia: Template = {
 	entrega: [],
 	contabilidade: { resumo: [], transacoes: [] },
 	cozinha: [],
+	mesaSelecionada: {
+		id: 0,
+		guests: 0,
+		status: 'livre',
+		time: '',
+		server: '',
+		mesaNome: '',
+		clienteNome: '',
+		products: [],
+	},
 };

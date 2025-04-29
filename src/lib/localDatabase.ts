@@ -1,6 +1,6 @@
 'use client';
 import { Template } from '@/fake-data/RestauranteTemplate';
-import { StoreData, StoreNames } from '@/types/dataBaseType';
+import { StoreData, StoreNames } from '@/types/databaseType';
 import { IDBPDatabase, openDB } from 'idb';
 
 let dbInstance: IDBPDatabase | null = null;
@@ -20,6 +20,7 @@ async function getDb() {
 			db.createObjectStore('entrega');
 			db.createObjectStore('contabilidade');
 			db.createObjectStore('cozinha');
+			db.createObjectStore('mesaSelecionada');
 		},
 	});
 
@@ -33,13 +34,14 @@ export async function salvarData<K extends StoreNames>(store: K, data: StoreData
 
 export async function carregarTudo(): Promise<Template> {
 	const db = await getDb();
-	const [cardapio, mesas, config, entrega, contabilidade, cozinha] = await Promise.all([
+	const [cardapio, mesas, config, entrega, contabilidade, cozinha, mesaSelecionada] = await Promise.all([
 		db.get('cardapio', 'dados'),
 		db.get('mesas', 'dados'),
 		db.get('config', 'dados'),
 		db.get('entrega', 'dados'),
 		db.get('contabilidade', 'dados'),
 		db.get('cozinha', 'dados'),
+		db.get('mesaSelecionada', 'dados'),
 	]);
 
 	return {
@@ -49,5 +51,6 @@ export async function carregarTudo(): Promise<Template> {
 		entrega,
 		contabilidade,
 		cozinha,
+		mesaSelecionada,
 	};
 }
