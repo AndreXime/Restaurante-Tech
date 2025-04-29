@@ -3,6 +3,7 @@ import { useData } from '@/contexts/DataContext';
 
 export function RecentTransactions() {
 	const { Contabilidade } = useData();
+	const Transacoes = Contabilidade.transacoes;
 
 	return (
 		<Card>
@@ -11,7 +12,10 @@ export function RecentTransactions() {
 			</CardHeader>
 			<CardContent>
 				<div className="space-y-4">
-					{Contabilidade.transacoes.map((transaction) => (
+					{Transacoes.length == 0 && (
+						<h2 className="font-bold text-lg mb-4">Não foi registrado nenhuma transação no momento</h2>
+					)}
+					{Transacoes.map((transaction) => (
 						<div
 							key={transaction.id}
 							className="flex justify-between items-center border-b pb-2">

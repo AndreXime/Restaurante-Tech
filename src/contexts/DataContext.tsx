@@ -2,7 +2,6 @@
 
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { restaurantVazio } from '@/fake-data/RestauranteTemplate';
-import SalvarDados from '@/hooks/SalvarDados';
 import { carregarTudo } from '@/lib/localDatabase';
 import DataContextType from '@/types/DataContextType';
 import { CardapioType, ConfigType, ContabilidadeType, DeliveryType, KitchenOrderType, TablesType } from '@/types/types';
@@ -66,7 +65,6 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 				setCozinha,
 				setEntrega,
 			}}>
-			<SalvarDados />
 			{children}
 		</DataContext.Provider>
 	);

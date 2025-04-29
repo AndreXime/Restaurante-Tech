@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useData } from '@/contexts/DataContext';
 import { salvarData } from '@/lib/localDatabase';
 
-export default function SalvarDados() {
+export default function useAutoSave() {
 	const { Mesas, Contabilidade, Config, Cozinha, Entrega, Cardapio, mesaSelecionada, setMesas } = useData();
 
 	useEffect(() => {
@@ -59,6 +59,4 @@ export default function SalvarDados() {
 
 		salvarMesaSelecionada();
 	}, [mesaSelecionada]);
-
-	return null;
 }

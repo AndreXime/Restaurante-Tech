@@ -86,8 +86,6 @@ export interface ResumoAccountingType {
 	value: string;
 	change: string;
 	trend: 'up' | 'down';
-	icon: LucideIcon;
-	color: string;
 }
 
 export interface TransactionsType {

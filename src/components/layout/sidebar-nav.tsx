@@ -38,12 +38,6 @@ export function SidebarNav() {
 							{item.label}
 						</Button>
 					))}
-					<Button
-						variant="ghost"
-						className="w-full justify-start mt-auto text-gray-600 hover:bg-green-200">
-						<LogOut className="mr-2 h-4 w-4" />
-						Sair
-					</Button>
 				</nav>
 			</div>
 

@@ -23,7 +23,7 @@ export interface Template {
 	mesaSelecionada: TablesType;
 }
 
-export const Empresa: Template = {
+export const EmpresaFake: Template = {
 	cardapio: { categorias: categories, pratos: foodItems },
 	mesas: Mesas,
 	config: { geralData: generalData, funcionarios: users },
@@ -41,7 +41,36 @@ export const restaurantVazio: Template = {
 		funcionarios: [],
 	},
 	entrega: [],
-	contabilidade: { resumo: [], transacoes: [] },
+	contabilidade: {
+		resumo: [
+			{
+				title: 'Vendas Totais',
+				value: '0',
+				change: '0%',
+				trend: 'up',
+			},
+			{
+				title: 'Pedidos',
+				value: '0',
+				change: '0%',
+				trend: 'up',
+			},
+			{
+				title: 'Valor Médio por Pedido',
+				value: '0',
+				change: '0%',
+				trend: 'up',
+			},
+			{
+				title: 'Vendas Totais',
+				value: '0',
+				change: '0%',
+				trend: 'up',
+			},
+		],
+
+		transacoes: [],
+	},
 	cozinha: [],
 	mesaSelecionada: {
 		id: 0,

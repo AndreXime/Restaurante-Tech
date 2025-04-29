@@ -62,10 +62,9 @@ export function Cart() {
 					</DialogContent>
 				</Dialog>
 			</div>
-
 			<div className="flex-1 overflow-auto p-4">
 				{mesaSelecionada.products.length == 0 && (
-					<h2 className="text-xl font-bold text-center">Nenhum produto foi adicionado</h2>
+					<h2 className="text-xl font-bold text-center">Nenhum produto foi adicionado ao carrinho</h2>
 				)}
 				{mesaSelecionada.products.map((item, index) => (
 					<div
@@ -142,7 +141,7 @@ export function Cart() {
 						<span className="text-xs">QR Code</span>
 					</Button>
 				</div>
-				<Button className="w-full bg-green-600 hover:bg-green-700 text-white h-12">Fazer Pedido</Button>
+				<Button className="w-full bg-green-600 hover:bg-green-700 text-white h-12 mt-0">Fazer Pedido</Button>
 			</div>
 		</div>
 	);
