@@ -11,11 +11,11 @@ export function MenuHeader() {
 	const { setTab, Tab, setMobileMenu, setSearchItem } = useNav();
 
 	return (
-		<div className="bg-white p-4 flex flex-col md:flex-row items-center gap-5 border-b">
+		<div className="bg-white p-4 flex flex-col md:flex-row items-center gap-3 border-b">
 			{/* Botão flutuante para telas pequenas */}
 			<div className="flex items-center justify-between md:justify-start gap-5 flex-1 w-full">
 				<div className="flex flex-row gap-5">
-					<div className="lg:hidden flex items-center">
+					<div className="lg:hidden flex items-center shrink-0">
 						<button
 							onClick={() => setMobileMenu(true)}
 							className="rounded-full">
@@ -49,7 +49,8 @@ export function MenuHeader() {
 									key={mesa.mesaNome}
 									value={mesa.mesaNome}
 									className="text-sm">
-									{`${mesa.mesaNome} - ${mesa.clienteNome}`}
+									{`${mesa.mesaNome}`}
+									<span className="hidden sm:block"> - {mesa.clienteNome}</span>
 								</SelectItem>
 							))}
 						</SelectContent>

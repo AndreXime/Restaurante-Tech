@@ -21,7 +21,6 @@ export function UserSettings() {
 					<thead>
 						<tr className="bg-gray-100">
 							<th className="text-left p-3">Nome</th>
-							<th className="text-left p-3">E-mail</th>
 							<th className="text-left p-3">Função</th>
 							<th className="text-left p-3">Status</th>
 							<th className="text-right p-3">Ações</th>
@@ -33,7 +32,6 @@ export function UserSettings() {
 								key={user.id}
 								className="border-t">
 								<td className="p-3">{user.name}</td>
-								<td className="p-3">{user.email}</td>
 								<td className="p-3">{user.role}</td>
 								<td className="p-3">
 									<span

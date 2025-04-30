@@ -3,7 +3,7 @@ import { ResumoAccountingType, TransactionsType } from '@/types/types';
 const summaryItems: ResumoAccountingType[] = [
 	{
 		title: 'Vendas Totais',
-		value: 'R$12.456,78',
+		value: '12.456,78',
 		change: '+12,5%',
 		trend: 'up',
 	},
@@ -15,13 +15,13 @@ const summaryItems: ResumoAccountingType[] = [
 	},
 	{
 		title: 'Valor Médio por Pedido',
-		value: 'R$36,10',
+		value: '36,10',
 		change: '+4,3%',
 		trend: 'up',
 	},
 	{
 		title: 'Despesas',
-		value: 'R$5.234,56',
+		value: '5.234,56',
 		change: '-2,1%',
 		trend: 'down',
 	},

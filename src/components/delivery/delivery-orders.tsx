@@ -33,7 +33,7 @@ export function DeliveryOrders() {
 
 			<TabsContent
 				value="pending"
-				className="grid grid-cols-2 gap-4">
+				className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 				{pendingOrders.length == 0 && <h2 className="font-bold text-lg ml-2">Nenhuma entrega pendente</h2>}
 
 				{pendingOrders.map((order) => (
@@ -46,7 +46,7 @@ export function DeliveryOrders() {
 
 			<TabsContent
 				value="inProgress"
-				className="grid grid-cols-2 gap-4">
+				className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 				{inProgressOrders.length == 0 && <h2 className="font-bold text-lg ml-2">Nenhuma entrega em andamento</h2>}
 
 				{inProgressOrders.map((order) => (
@@ -59,7 +59,7 @@ export function DeliveryOrders() {
 
 			<TabsContent
 				value="completed"
-				className="grid grid-cols-2 gap-4">
+				className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 				{completedOrders.length == 0 && <h2 className="font-bold text-lg ml-2">Nenhuma entrega concluida</h2>}
 
 				{completedOrders.map((order) => (

@@ -50,7 +50,7 @@ export function DeliveryOrderCard({ order }: { order: DeliveryType }) {
 					)}
 				</div>
 
-				<div className="flex gap-2">
+				<div className="flex gap-2 flex-col sm:flex-row">
 					{order.status === 'pendente' && (
 						<>
 							<Button

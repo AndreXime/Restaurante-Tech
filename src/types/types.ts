@@ -106,7 +106,6 @@ export interface CategoriesType {
 export interface FuncionariosType {
 	id: number;
 	name: string;
-	email: string;
 	role: string;
 	status: 'Ativo' | 'Inativo';
 }

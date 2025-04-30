@@ -1,5 +1,4 @@
-import { FoodType, FuncionariosType, GeneralDataType } from '@/types/types';
-import { categories, foodItems } from './menu';
+import { FuncionariosType, GeneralDataType } from '@/types/types';
 
 const generalData: GeneralDataType = {
 	restaurantName: 'Chili Restaurante',
@@ -10,16 +9,12 @@ const generalData: GeneralDataType = {
 	currency: 'BRL',
 };
 
-const categoriesItems = categories;
-
-const menuItems: FoodType[] = foodItems;
-
 const users: FuncionariosType[] = [
-	{ id: 1, name: 'Admin', email: 'admin@chilirestaurante.com', role: 'Administrador', status: 'Ativo' },
-	{ id: 2, name: 'João Silva', email: 'joao@chilirestaurante.com', role: 'Gerente', status: 'Ativo' },
-	{ id: 3, name: 'Maria Oliveira', email: 'maria@chilirestaurante.com', role: 'Atendente', status: 'Ativo' },
-	{ id: 4, name: 'Carlos Santos', email: 'carlos@chilirestaurante.com', role: 'Cozinheiro', status: 'Ativo' },
-	{ id: 5, name: 'Ana Pereira', email: 'ana@chilirestaurante.com', role: 'Entregador', status: 'Inativo' },
+	{ id: 1, name: 'André', role: 'Administrador', status: 'Ativo' },
+	{ id: 2, name: 'João Silva', role: 'Gerente', status: 'Ativo' },
+	{ id: 3, name: 'Maria Oliveira', role: 'Atendente', status: 'Ativo' },
+	{ id: 4, name: 'Carlos Santos', role: 'Cozinheiro', status: 'Ativo' },
+	{ id: 5, name: 'Ana Pereira', role: 'Entregador', status: 'Inativo' },
 ];
 
-export { generalData, menuItems, categoriesItems, users };
+export { generalData, users };

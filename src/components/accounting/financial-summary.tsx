@@ -14,7 +14,7 @@ export function FinancialSummary() {
 						<div className="flex justify-between items-start">
 							<div>
 								<p className="text-sm text-gray-500">{item.title}</p>
-								<h3 className="text-2xl font-bold mt-1">{item.value}</h3>
+								<h3 className="text-2xl font-bold mt-1">R${item.value}</h3>
 							</div>
 							{item.title == 'Vendas Totais' && (
 								<div className={`p-2 rounded-full bg-green-100 text-green-600`}>

@@ -1,0 +1,11 @@
+Em ordem especifica:
+Usuario adiciona categoria
+Usuario adiciona pratos
+Usuario adiciona mesas
+Usuario adiciona funcionarios
+
+Usuario pode fazer pedido do carrinho a Cozinha
+Quando a cozinha estiver pronta marcar como concluida se retirada for no local
+Se não for no local enviar para entrega por um funcionario
+
+Depois disso adicionar o dinheiro recebido na contabilidade

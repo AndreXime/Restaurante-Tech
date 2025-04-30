@@ -2,7 +2,7 @@ import { DeliveryOrders, FinancialSummary, OrderGrid, RecentTransactions, Settin
 
 export function TableServicePage() {
 	return (
-		<div className="flex-1 flex overflow-hidden p-4">
+		<div className="flex-1 flex overflow-hidden">
 			<div className="flex-1 overflow-auto">
 				<TableGrid />
 			</div>
@@ -12,7 +12,7 @@ export function TableServicePage() {
 
 export function DeliveryPage() {
 	return (
-		<div className="flex-1 flex flex-col lg:flex-row gap-4 p-4">
+		<div className="flex-1 flex flex-col lg:flex-row gap-4">
 			<div className="flex-1">
 				<DeliveryOrders />
 			</div>
@@ -21,7 +21,7 @@ export function DeliveryPage() {
 }
 export function KitchenPage() {
 	return (
-		<div className="flex-1 overflow-auto p-4">
+		<div className="flex-1 overflow-auto">
 			<OrderGrid />
 		</div>
 	);
@@ -29,7 +29,7 @@ export function KitchenPage() {
 
 export function AccountingPage() {
 	return (
-		<div className="flex-1 overflow-auto p-4 space-y-4">
+		<div className="flex-1 overflow-auto space-y-4">
 			<FinancialSummary />
 			<div className="grid grid-cols-1">
 				<RecentTransactions />
@@ -40,7 +40,7 @@ export function AccountingPage() {
 
 export function SettingsPage() {
 	return (
-		<div className="flex-1 overflow-auto p-4">
+		<div className="flex-1 overflow-auto pt-2">
 			<SettingsTabs />
 		</div>
 	);

@@ -30,6 +30,7 @@ export default async function ClientApp() {
 								<ul className="mt-2 space-y-1">
 									<li>• Dados prontos para visualizar o dashboard</li>
 									<li>• Alterações não são salvas</li>
+									<li>• Funcionalidades podem não funcionar</li>
 								</ul>
 							</div>
 						</div>
