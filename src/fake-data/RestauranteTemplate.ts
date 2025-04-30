@@ -23,7 +23,7 @@ export interface Template {
 	mesaSelecionada: TablesType;
 }
 
-export const EmpresaFake: Template = {
+export const restauranteFake: Template = {
 	cardapio: { categorias: categories, pratos: foodItems },
 	mesas: Mesas,
 	config: { geralData: generalData, funcionarios: users },

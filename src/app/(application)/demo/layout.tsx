@@ -1,4 +1,4 @@
-import '../app/globals.css';
+import '../../globals.css';
 import { SidebarNav } from '@/components';
 import { NavProvider } from '@/contexts/NavContext';
 import type { ReactNode } from 'react';
@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 		<html lang="pt-BR">
 			<body>
 				<NavProvider>
-					<DataProvider>
+					<DataProvider demo>
 						<div className="flex h-screen bg-gray-100">
 							<SidebarNav />
 							<div className="flex-1 flex flex-col overflow-hidden">

@@ -9,7 +9,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
-export function DataProvider({ children }: { children: React.ReactNode }) {
+export function DataProvider({ children, demo = false }: { children: React.ReactNode; demo?: boolean }) {
 	const [Contabilidade, setContabilidade] = useState<ContabilidadeType>(restaurantVazio.contabilidade);
 	const [Config, setConfig] = useState<ConfigType>(restaurantVazio.config);
 	const [Cardapio, setCardapio] = useState<CardapioType>(restaurantVazio.cardapio);
@@ -35,12 +35,31 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 				setMesaSelecionada((prev) => dados.mesaSelecionada ?? prev);
 			} catch (err) {
 				throw Error('Erro carregando dados do IndexedDB' + err);
-			} finally {
-				setLoading(false);
 			}
 		}
 
-		carregarDados();
+		async function carregarDemo() {
+			try {
+				const moduleImport = await import('@/fake-data/RestauranteTemplate');
+				const { restauranteFake } = moduleImport;
+				setMesas(restauranteFake.mesas);
+				setContabilidade(restauranteFake.contabilidade);
+				setConfig(restauranteFake.config);
+				setCozinha(restauranteFake.cozinha);
+				setEntrega(restauranteFake.entrega);
+				setCardapio(restauranteFake.cardapio);
+				setMesaSelecionada(restauranteFake.mesaSelecionada);
+			} catch (err) {
+				console.error('Erro carregando dados de demo:', err);
+			}
+		}
+
+		if (demo) {
+			carregarDemo();
+		} else {
+			carregarDados();
+		}
+		setLoading(false);
 	}, []);
 
 	if (loading) {
