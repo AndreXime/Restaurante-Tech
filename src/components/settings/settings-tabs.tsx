@@ -9,7 +9,9 @@ import { EstastisticaSettings } from './EstastisticaSettings';
 
 export function SettingsTabs() {
 	return (
-		<Tabs defaultValue="general">
+		<Tabs
+			defaultValue="general"
+			className="w-full">
 			<TabsList className="mb-4 gap-3">
 				<TabsTrigger value="general">Geral</TabsTrigger>
 				<TabsTrigger value="users">Funcionarios</TabsTrigger>

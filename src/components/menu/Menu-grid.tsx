@@ -32,20 +32,22 @@ export function MenuGrid() {
 					</div>
 				))}
 			</div>
-			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-				{activeItems.length == 0 && (
-					<h2 className="col-span-full text-center font-bold text-lg">
-						{ActiveCategory == 'Todos'
-							? 'Você ainda não cadastrou nenhum prato, vá para aba de configuração cadastrar'
-							: 'Não foi encontrado nenhum prato com o filtro atual'}
-					</h2>
-				)}
-				{activeItems.map((item, index) => (
-					<FoodCard
-						key={index}
-						{...item}
-					/>
-				))}
+			<div className="flex-1 min-h-0 overflow-y-auto">
+				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+					{activeItems.length == 0 && (
+						<h2 className="col-span-full text-center font-bold text-lg">
+							{ActiveCategory == 'Todos'
+								? 'Você ainda não cadastrou nenhum prato, vá para aba de configuração cadastrar'
+								: 'Não foi encontrado nenhum prato com o filtro atual'}
+						</h2>
+					)}
+					{activeItems.map((item, index) => (
+						<FoodCard
+							key={index}
+							{...item}
+						/>
+					))}
+				</div>
 			</div>
 		</>
 	);

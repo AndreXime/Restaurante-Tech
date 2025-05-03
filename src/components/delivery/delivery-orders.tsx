@@ -10,7 +10,9 @@ export function DeliveryOrders() {
 	const completedOrders = Entrega.filter((order) => order.status == 'entregue');
 
 	return (
-		<Tabs defaultValue="pending">
+		<Tabs
+			defaultValue="pending"
+			className="w-full">
 			<TabsList className="mb-4 gap-2">
 				<TabsTrigger
 					value="pending"
