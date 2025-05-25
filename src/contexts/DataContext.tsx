@@ -1,8 +1,8 @@
 'use client';
 
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
-import { restaurantVazio } from '@/fake-data/RestauranteTemplate';
-import { carregarTudo } from '@/lib/localDatabase';
+import { restaurantVazio, Template } from '@/fake-data/RestauranteTemplate';
+import { localDatabase } from '@/lib/localDatabase';
 import DataContextType from '@/types/DataContextType';
 import { CardapioType, ConfigType, ContabilidadeType, DeliveryType, KitchenOrderType, TablesType } from '@/types/types';
 import { createContext, useContext, useState, useEffect } from 'react';
@@ -24,42 +24,23 @@ export function DataProvider({ children, demo = false }: { children: React.React
 	useEffect(() => {
 		async function carregarDados() {
 			try {
-				const dados = await carregarTudo();
-				// Se for undefined manter o valor padrao
-				setMesas((prev) => dados.mesas ?? prev);
-				setContabilidade((prev) => dados.contabilidade ?? prev);
-				setConfig((prev) => dados.config ?? prev);
-				setCozinha((prev) => dados.cozinha ?? prev);
-				setEntrega((prev) => dados.entrega ?? prev);
-				setCardapio((prev) => dados.cardapio ?? prev);
-				setMesaSelecionada((prev) => dados.mesaSelecionada ?? prev);
-			} catch (err) {
-				throw Error('Erro carregando dados do IndexedDB' + err);
+				const data = demo ? await localDatabase.carregarDemo() : await localDatabase.carregarClient();
+
+				setMesas((prev) => data.mesas ?? prev);
+				setContabilidade((prev) => data.contabilidade ?? prev);
+				setConfig((prev) => data.config ?? prev);
+				setCozinha((prev) => data.cozinha ?? prev);
+				setEntrega((prev) => data.entrega ?? prev);
+				setCardapio((prev) => data.cardapio ?? prev);
+				setMesaSelecionada((prev) => data.mesaSelecionada ?? prev);
+			} catch (error) {
+				console.error('Erro carregando dados:', error);
+			} finally {
+				setLoading(false);
 			}
 		}
 
-		async function carregarDemo() {
-			try {
-				const moduleImport = await import('@/fake-data/RestauranteTemplate');
-				const { restauranteFake } = moduleImport;
-				setMesas(restauranteFake.mesas);
-				setContabilidade(restauranteFake.contabilidade);
-				setConfig(restauranteFake.config);
-				setCozinha(restauranteFake.cozinha);
-				setEntrega(restauranteFake.entrega);
-				setCardapio(restauranteFake.cardapio);
-				setMesaSelecionada(restauranteFake.mesaSelecionada);
-			} catch (err) {
-				console.error('Erro carregando dados de demo:', err);
-			}
-		}
-
-		if (demo) {
-			carregarDemo();
-		} else {
-			carregarDados();
-		}
-		setLoading(false);
+		carregarDados();
 	}, []);
 
 	if (loading) {
