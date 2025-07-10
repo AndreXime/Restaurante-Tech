@@ -22,3 +22,26 @@ export function encontrarMenorIdDisponivel<T extends { id: string | number }>(it
     while (usados.includes(i)) i++;
     return String(i);
 }
+
+export function getPedidoStatus({
+    startedAt,
+    endedAt,
+}: {
+    createdAt: string;
+    startedAt?: string;
+    endedAt?: string;
+}): 'pendente' | 'em preparo' | 'pronto' {
+    if (endedAt) return 'pronto';
+    if (startedAt) return 'em preparo';
+    return 'pendente';
+}
+
+export function getDeliveryStatus({
+    startedAt,
+}: {
+    createdAt: string;
+    startedAt?: string;
+}): 'pendente' | 'em andamento' {
+    if (startedAt) return 'em andamento';
+    return 'pendente';
+}

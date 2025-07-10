@@ -119,6 +119,19 @@ const generateMesas = (count: number, funcionarios: FuncionariosType[]): TablesT
             products: { standby: [], processing: [], done: [] },
         });
     }
+
+    mesas.push({
+        id: -1,
+        mesaNome: `Delivery`,
+        status: 'ocupada',
+        hidden: true,
+        guests: 0,
+        time: '',
+        server: '',
+        clienteNome: '',
+        products: { standby: [], processing: [], done: [] },
+    });
+
     return mesas;
 };
 
@@ -145,8 +158,10 @@ const generateKitchenOrders = (mesas: TablesType[], cardapio: CardapioType): Kit
             id: String(orderId++).padStart(3, '0'),
             table: String(mesa.id),
             time: mesa.time,
-            status: faker.helpers.arrayElement(['pendente', 'pronto'] as const),
             server: mesa.server,
+            createdAt: faker.date
+                .between({ from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), to: new Date() })
+                .toISOString(),
             orderItems,
         });
     }
@@ -165,7 +180,9 @@ const generateDeliveries = (count: number): DeliveryType[] => {
             items: faker.number.int({ min: 1, max: 7 }),
             total: parseFloat(faker.commerce.price({ min: 25, max: 250 })),
             time: faker.date.recent().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
-            status,
+            createdAt: faker.date
+                .between({ from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), to: new Date() })
+                .toISOString(),
             deliveryPerson: status !== 'pendente' ? `${faker.person.firstName()} Motoboy` : undefined,
         });
     }

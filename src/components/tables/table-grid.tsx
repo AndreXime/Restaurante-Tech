@@ -31,7 +31,7 @@ export function TableGrid() {
                     Não foi cadastrado nenhuma mesa, vá em configurações para cadastrar
                 </h2>
             )}
-            {Mesas.map((table) => (
+            {Mesas.filter((table) => table.id != -1).map((table) => (
                 <TableCard key={table.id} {...table} />
             ))}
         </div>
@@ -94,7 +94,7 @@ function TableCard(mesa: TablesType) {
     }
 
     return (
-        <Card key={mesa.id} className="overflow-hidden h-70">
+        <Card key={mesa.id} className="overflow-hidden h-full min-h-[300px]">
             <CardContent className="p-4 py-1 h-full flex flex-col">
                 <div className="flex justify-between items-center mb-3">
                     <h3 className="text-lg font-bold">{mesa.mesaNome}</h3>
@@ -144,7 +144,7 @@ function TableCard(mesa: TablesType) {
                     </div>
                 )}
 
-                <div className="flex gap-2 mt-auto">
+                <div className="flex flex-wrap gap-2 mt-auto">
                     {mesa.status !== 'livre' ? (
                         <>
                             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

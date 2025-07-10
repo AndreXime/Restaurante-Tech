@@ -1,13 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DeliveryOrderCard } from './delivery-order-card';
 import { useDataStore } from '@/store/userStore';
+import { getDeliveryStatus } from '@/lib/utils';
 
 export function DeliveryOrders() {
     const Entrega = useDataStore((state) => state.entrega);
 
-    const pendingOrders = Entrega.filter((order) => order.status == 'pendente');
-    const inProgressOrders = Entrega.filter((order) => order.status == 'em andamento');
-    const completedOrders = Entrega.filter((order) => order.status == 'entregue');
+    const pendingOrders = Entrega.filter((order) => getDeliveryStatus(order) == 'pendente');
+    const inProgressOrders = Entrega.filter((order) => getDeliveryStatus(order) == 'em andamento');
 
     return (
         <Tabs defaultValue="pending" className="w-full">
@@ -24,7 +24,6 @@ export function DeliveryOrders() {
                         {inProgressOrders.length}
                     </span>
                 </TabsTrigger>
-                <TabsTrigger value="completed">Entregues</TabsTrigger>
             </TabsList>
 
             <TabsContent value="pending" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -41,14 +40,6 @@ export function DeliveryOrders() {
                 )}
 
                 {inProgressOrders.map((order) => (
-                    <DeliveryOrderCard key={order.id} order={order} />
-                ))}
-            </TabsContent>
-
-            <TabsContent value="completed" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {completedOrders.length == 0 && <h2 className="font-bold text-lg ml-2">Nenhuma entrega concluida</h2>}
-
-                {completedOrders.map((order) => (
                     <DeliveryOrderCard key={order.id} order={order} />
                 ))}
             </TabsContent>

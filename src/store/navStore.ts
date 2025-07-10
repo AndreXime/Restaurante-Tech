@@ -7,7 +7,8 @@ export type possibleTabs =
     | 'Cozinha'
     | 'Entregas'
     | 'Configurações'
-    | 'Carrinho';
+    | 'Carrinho'
+    | 'Criar Delivery/Retirada';
 
 type NavState = {
     mobileMenu: boolean;

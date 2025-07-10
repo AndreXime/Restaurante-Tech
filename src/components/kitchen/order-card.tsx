@@ -1,12 +1,12 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Clock, User, Check } from 'lucide-react';
+import { getPedidoStatus } from '@/lib/utils';
 
 export function OrderCard({ order }: { order: KitchenOrderType }) {
-    const statusColors = {
-        pendente: 'bg-yellow-100 text-yellow-600',
-        pronto: 'bg-green-100 text-green-600',
-    };
+    const status = getPedidoStatus(order);
+
+    async function ReadyOrder() {}
 
     return (
         <Card className="h-full">
@@ -16,8 +16,8 @@ export function OrderCard({ order }: { order: KitchenOrderType }) {
                         <h3 className="text-lg font-bold">Mesa {order.table}</h3>
                         <p className="text-sm text-gray-600">Pedido #{order.id}</p>
                     </div>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[order.status]}`}>
-                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-600`}>
+                        {status}
                     </span>
                 </div>
 
@@ -47,14 +47,18 @@ export function OrderCard({ order }: { order: KitchenOrderType }) {
                 </div>
 
                 <div className="flex gap-2 mt-auto">
-                    {order.status === 'pendente' && (
-                        <Button variant="default" className="flex-1 bg-green-600 hover:bg-green-700">
+                    {status === 'pendente' && (
+                        <Button
+                            variant="default"
+                            className="flex-1 bg-green-600 hover:bg-green-700"
+                            onClick={ReadyOrder}
+                        >
                             <Check className="h-4 w-4 mr-2" />
                             Marcar como Pronto
                         </Button>
                     )}
 
-                    {order.status === 'pronto' && (
+                    {status === 'pronto' && (
                         <Button variant="outline" className="flex-1" disabled>
                             Pronto para Entrega
                         </Button>

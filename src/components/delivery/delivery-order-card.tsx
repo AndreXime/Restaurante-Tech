@@ -1,12 +1,14 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { MapPin, Phone, Clock, Package, User } from 'lucide-react';
+import { getDeliveryStatus } from '@/lib/utils';
 
 export function DeliveryOrderCard({ order }: { order: DeliveryType }) {
+    const status = getDeliveryStatus(order);
+
     const statusColors = {
         pendente: 'bg-red-100 text-red-600',
         'em andamento': 'bg-yellow-100 text-yellow-600',
-        entregue: 'bg-green-100 text-green-600',
     };
 
     return (
@@ -17,8 +19,8 @@ export function DeliveryOrderCard({ order }: { order: DeliveryType }) {
                         <h3 className="text-lg font-bold">{order.id}</h3>
                         <p className="text-sm text-gray-600">{order.customer}</p>
                     </div>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[order.status]}`}>
-                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[status]}`}>
+                        {status}
                     </span>
                 </div>
 
@@ -50,7 +52,7 @@ export function DeliveryOrderCard({ order }: { order: DeliveryType }) {
                 </div>
 
                 <div className="flex gap-2 flex-wrap">
-                    {order.status === 'pendente' && (
+                    {status === 'pendente' && (
                         <>
                             <Button variant="default" className="flex-1 bg-green-600 hover:bg-green-700">
                                 Atribuir Entregador
@@ -61,7 +63,7 @@ export function DeliveryOrderCard({ order }: { order: DeliveryType }) {
                         </>
                     )}
 
-                    {order.status === 'em andamento' && (
+                    {status === 'em andamento' && (
                         <>
                             <Button variant="default" className="flex-1 bg-green-600 hover:bg-green-700">
                                 Confirmar Entrega
@@ -70,12 +72,6 @@ export function DeliveryOrderCard({ order }: { order: DeliveryType }) {
                                 Ver Detalhes
                             </Button>
                         </>
-                    )}
-
-                    {order.status === 'entregue' && (
-                        <Button variant="outline" className="flex-1">
-                            Ver Detalhes
-                        </Button>
                     )}
                 </div>
             </CardContent>

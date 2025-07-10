@@ -1,12 +1,14 @@
 import { LucideIcon } from 'lucide-react';
 
 declare global {
+    // Para Mesas
     interface TablesType {
         id: number;
         status: 'ocupada' | 'livre';
         guests: number;
         time: string;
         server: string;
+        hidden?: boolean;
         mesaNome: string;
         clienteNome: string;
         products: {
@@ -14,6 +16,46 @@ declare global {
             processing: FoodCartType[];
             done: FoodCartType[];
         };
+    }
+
+    // Para Cozinha
+    interface KitchenOrderType {
+        id: string;
+        table: string; // Atributo mesaNome que é unico de TablesType
+        time: string;
+        clientName?: string;
+        server: string;
+        orderItems: Array<{
+            name: string;
+            quantity: number;
+            notes?: string;
+        }>;
+
+        // Dados extras para delivery
+        isDelivery?: true;
+        deliveryAddress?: string;
+        deliveryPhone?: string;
+        paymentMethod?: string;
+
+        createdAt: string; // pedido enviado pra cozinha
+        startedAt?: string; // cozinha começou a preparar
+        endedAt?: string; // cozinha terminou
+    }
+
+    // Para Entregas
+    interface DeliveryType {
+        id: string;
+        customer: string;
+        address: string;
+        phone: string;
+        items: number;
+        total: number;
+        time: string;
+        deliveryPerson?: string;
+
+        createdAt: string; // delivery criado (após endedAt da cozinha)
+        dispatchedAt?: string; // saiu pra entrega
+        deliveredAt?: string; // entregue com sucesso
     }
 
     // Para o Cardapio
@@ -32,33 +74,6 @@ declare global {
     interface ContabilidadeType {
         resumo: ResumoAccountingType[];
         transacoes: TransactionsType[];
-    }
-
-    // Para Cozinha
-    interface KitchenOrderType {
-        id: string;
-        table: string;
-        time: string;
-        status: 'pendente' | 'pronto';
-        server: string;
-        orderItems: Array<{
-            name: string;
-            quantity: number;
-            notes?: string;
-        }>;
-    }
-
-    // Para Entregas
-    interface DeliveryType {
-        id: string;
-        customer: string;
-        address: string;
-        phone: string;
-        items: number;
-        total: number;
-        time: string;
-        status: 'pendente' | 'em andamento' | 'entregue';
-        deliveryPerson?: string;
     }
 
     /* Tipos auxiliares  */

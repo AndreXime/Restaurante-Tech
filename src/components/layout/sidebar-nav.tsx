@@ -11,6 +11,7 @@ import {
     CookingPot,
     X,
     LucideIcon,
+    Plus,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { possibleTabs, useNavStore } from '@/store/navStore';
@@ -19,6 +20,7 @@ const navItems: { icon: LucideIcon; label: possibleTabs }[] = [
     { icon: Menu, label: 'Cardápio' },
     { icon: TableBar, label: 'Serviços de Mesa' },
     { icon: ChefHat, label: 'Cozinha' },
+    { icon: Plus, label: 'Criar Delivery/Retirada' },
     { icon: Truck, label: 'Entregas' },
     { icon: Calculator, label: 'Contabilidade' },
     { icon: Settings, label: 'Configurações' },
@@ -32,7 +34,7 @@ export function SidebarNav() {
 
     return (
         <>
-            <div className="hidden lg:block w-60 p-4 border-r h-screen">
+            <div className="hidden lg:block w-65 p-4 border-r h-screen">
                 <div className="flex items-center gap-2 mb-8">
                     <CookingPot className="w-8 h-8" />
                     <span className="font-semibold">Restaurante Tech</span>

@@ -30,8 +30,8 @@ export function Cart() {
             id: encontrarMenorIdDisponivel(cozinha),
             table: mesaSelecionada?.mesaNome || '',
             time: getHours(),
-            status: 'pendente',
             server: 'João',
+            createdAt: new Date().toISOString(),
             orderItems: productsStandby.map((item) => {
                 return { name: item.title, quantity: item.quantity };
             }),

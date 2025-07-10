@@ -3,7 +3,7 @@ import { Card, CardContent } from '../ui/card';
 import { parseNumberBR } from '@/lib/utils';
 
 export function EstastisticaSettings() {
-    const { cardapio, mesas, config, entrega, cozinha, contabilidade } = useDataStore((state) => ({
+    const { cardapio, mesas, config, contabilidade } = useDataStore((state) => ({
         cardapio: state.cardapio,
         mesas: state.mesas,
         config: state.config,
@@ -28,14 +28,6 @@ export function EstastisticaSettings() {
         {
             title: 'Quantidade de funcionarios',
             value: config.funcionarios.length,
-        },
-        {
-            title: 'Entregas concluidas',
-            value: entrega.filter((value) => value.status == 'entregue').length,
-        },
-        {
-            title: 'Pratos concluidas pela cozinha',
-            value: cozinha.filter((value) => value.status == 'pronto').length,
         },
         {
             title: 'Saldo esperado',

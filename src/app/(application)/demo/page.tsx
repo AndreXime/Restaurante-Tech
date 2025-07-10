@@ -1,6 +1,7 @@
 'use client';
 
 import { Cart, MenuGrid, MenuHeader, SimpleHeader } from '@/components';
+import { DeliveryCart } from '@/components/delivery/deliveryCart';
 import { TableServicePage, KitchenPage, DeliveryPage, SettingsPage, AccountingPage } from '@/components/pages';
 import { useNavStore } from '@/store/navStore';
 
@@ -21,6 +22,8 @@ export default function MenuPage() {
                 return <SettingsPage />;
             case 'Cardápio':
                 return <MenuGrid />;
+            case 'Criar Delivery/Retirada':
+                return <DeliveryCart />;
             default:
                 return <Cart />;
         }

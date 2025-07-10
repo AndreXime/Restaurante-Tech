@@ -30,7 +30,13 @@ export function MenuHeader() {
                     </div>
                     <div
                         className="relative cursor-pointer"
-                        onClick={() => setActiveTab(activeTab == 'Cardápio' ? 'Carrinho' : 'Cardápio')}
+                        onClick={() => {
+                            if (mesaSelecionada?.mesaNome.includes('Delivery')) {
+                                setActiveTab('Criar Delivery/Retirada');
+                                return;
+                            }
+                            setActiveTab(activeTab == 'Cardápio' ? 'Carrinho' : 'Cardápio');
+                        }}
                     >
                         <LucideShoppingCart className="w-7 h-7" />
                         {mesaSelecionada && mesaSelecionada.products.standby.length > 0 && (
@@ -47,10 +53,7 @@ export function MenuHeader() {
                     }}
                     defaultValue={undefined}
                 >
-                    <SelectTrigger
-                        className="w-full md:w-auto"
-                        data-placeholder={!mesaSelecionada || mesasOcupadas.length === 0}
-                    >
+                    <SelectTrigger data-placeholder={!mesaSelecionada || mesasOcupadas.length === 0}>
                         <SelectValue
                             placeholder={mesasOcupadas.length === 0 ? 'Nenhuma mesa ocupada' : 'Selecione uma mesa'}
                         />
@@ -58,15 +61,14 @@ export function MenuHeader() {
                     <SelectContent>
                         {mesasOcupadas.map((mesa) => (
                             <SelectItem key={mesa.mesaNome} value={mesa.mesaNome} className="text-sm">
-                                {`${mesa.mesaNome}`}
-                                <span className="hidden sm:block"> - {mesa.clienteNome}</span>
+                                {mesa.mesaNome} - {mesa.clienteNome}
                             </SelectItem>
                         ))}
                     </SelectContent>
                 </Select>
             </div>
             {activeTab === 'Cardápio' && (
-                <div className="flex-2 relative w-full">
+                <div className="flex-1 relative w-full">
                     <Search size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <Input
                         type="text"
