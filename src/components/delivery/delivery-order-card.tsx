@@ -35,12 +35,12 @@ export function DeliveryOrderCard({ order }: { order: DeliveryType }) {
                     </div>
                     <div className="flex items-center text-sm text-gray-600">
                         <Clock className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span>Horário: {order.time}</span>
+                        <span>Horário: {order.startedAt}</span>
                     </div>
                     <div className="flex items-center text-sm text-gray-600">
                         <Package className="h-4 w-4 mr-2 flex-shrink-0" />
                         <span>
-                            {order.items} itens - R${order.total.toFixed(2)}
+                            {order.payments.items} itens - R${order.payments.total.toFixed(2)}
                         </span>
                     </div>
                     {order.deliveryPerson && (

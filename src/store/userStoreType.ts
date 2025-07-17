@@ -10,6 +10,7 @@ export type StoreState = ClientDataType & {
 export type StoreActions = {
     loadInitialData: (demo?: boolean) => Promise<void>;
     setMesaSelecionada: (updater: Updater<ClientDataType['mesaSelecionada']>) => void;
+    setDeliverySelecionado: (updater: Updater<ClientDataType['deliverySelecionado']>) => void;
     setMesas: (updater: Updater<ClientDataType['mesas']>) => void;
     setConfig: (updater: Updater<ClientDataType['config']>) => void;
     setCardapio: (updater: Updater<ClientDataType['cardapio']>) => void;

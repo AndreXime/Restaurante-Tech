@@ -39,14 +39,14 @@ export const restaurantVazio: ClientDataType = {
         transacoes: [],
     },
     cozinha: [],
-    mesaSelecionada: {
-        id: 0,
-        guests: 0,
-        status: 'livre',
-        time: '',
-        server: '',
-        mesaNome: '',
-        clienteNome: '',
-        products: { done: [], processing: [], standby: [] },
+    mesaSelecionada: undefined,
+    deliverySelecionado: {
+        inCart: [],
+        customer: '',
+        phone: '',
+        address: '',
+        type: 'delivery',
+        startedAt: '',
+        payments: { items: 0, total: 0, type: 'dinheiro' },
     },
 };

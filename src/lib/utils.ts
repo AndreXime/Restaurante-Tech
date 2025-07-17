@@ -16,32 +16,29 @@ export function getHours() {
     });
 }
 
-export function encontrarMenorIdDisponivel<T extends { id: string | number }>(items: T[]): string {
+export function encontrarMenorIdDisponivel<T extends { id: string | number }>(items: T[]): number {
     const usados = items.map((item) => Number(item.id));
     let i = 1;
     while (usados.includes(i)) i++;
-    return String(i);
+    return i;
 }
 
-export function getPedidoStatus({
-    startedAt,
-    endedAt,
-}: {
-    createdAt: string;
-    startedAt?: string;
-    endedAt?: string;
-}): 'pendente' | 'em preparo' | 'pronto' {
-    if (endedAt) return 'pronto';
-    if (startedAt) return 'em preparo';
-    return 'pendente';
-}
-
-export function getDeliveryStatus({
-    startedAt,
-}: {
-    createdAt: string;
-    startedAt?: string;
-}): 'pendente' | 'em andamento' {
+export function getDeliveryStatus({ startedAt }: { startedAt?: string }): 'pendente' | 'em andamento' {
     if (startedAt) return 'em andamento';
     return 'pendente';
+}
+
+export function sumTotalCost(mesa: TablesType) {
+    const productsStandby = mesa.products.inCart || [];
+    const productsProcessing = mesa.products.inKitchen || [];
+    const productsDone = mesa.products.alreadyEaten || [];
+
+    const subtotalStandby = productsStandby.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const subtotalProcessing = productsProcessing.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const subtotalDone = productsDone.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+    const subTotal = subtotalDone + subtotalProcessing + subtotalStandby;
+    const tax = subTotal * 0.05;
+
+    return 'R$' + (subTotal + tax).toFixed(2).replace('.', ',');
 }

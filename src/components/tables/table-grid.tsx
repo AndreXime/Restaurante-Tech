@@ -2,24 +2,23 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
-    Users,
     Clock,
     User,
     HandPlatter,
     Edit2,
     ShoppingBag,
-    Check,
     Smile,
     UserPlus,
     ChefHat,
     ShoppingCart,
+    DollarSign,
 } from 'lucide-react';
 import { DialogHeader, Input, Label } from '../ui';
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { useNavStore } from '@/store/navStore';
 import { useDataStore } from '@/store/userStore';
-import { getHours } from '@/lib/utils';
+import { getHours, sumTotalCost } from '@/lib/utils';
 
 export function TableGrid() {
     const Mesas = useDataStore((state) => state.mesas);
@@ -27,7 +26,7 @@ export function TableGrid() {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
             {Mesas.length == 0 && (
-                <h2 className="col-span-full font-bold text-lg text-center">
+                <h2 className="font-bold text-2xl text-center p-10 w-full col-span-full">
                     Não foi cadastrado nenhuma mesa, vá em configurações para cadastrar
                 </h2>
             )}
@@ -48,7 +47,6 @@ function TableCard(mesa: TablesType) {
     const setActiveTab = useNavStore((state) => state.setActiveTab);
 
     const setMesaSelecionada = useDataStore((state) => state.setMesaSelecionada);
-    const setMesas = useDataStore((state) => state.setMesas);
 
     const [tempCustomer, setTempCustomer] = useState(mesa);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -57,7 +55,7 @@ function TableCard(mesa: TablesType) {
         setMesaSelecionada({
             ...tempCustomer,
             status: 'ocupada',
-            time: tempCustomer.time || getHours(),
+            usedAt: tempCustomer.usedAt || getHours(),
         });
         setDialogOpen(false);
     }
@@ -65,32 +63,6 @@ function TableCard(mesa: TablesType) {
     async function SeeDetails() {
         setMesaSelecionada(mesa);
         setActiveTab('Carrinho');
-    }
-
-    async function LiberarMesa() {
-        const empty: TablesType = {
-            ...mesa,
-            status: 'livre',
-            guests: 0,
-            products: { standby: [], processing: [], done: [] },
-            time: '',
-            clienteNome: '',
-            server: '',
-        };
-
-        setMesas((prev) =>
-            prev.map((table) => {
-                if (table.id !== mesa.id) {
-                    return table;
-                }
-
-                return empty;
-            })
-        );
-
-        setTempCustomer(empty);
-
-        setMesaSelecionada((prev) => (prev?.id == mesa.id ? undefined : prev));
     }
 
     return (
@@ -107,30 +79,36 @@ function TableCard(mesa: TablesType) {
                     <div className="space-y-2 mb-3">
                         <div className="flex items-center text-sm text-gray-600">
                             <User className="h-4 w-4 mr-2" />
-                            <span>{mesa.clienteNome}</span>
+                            <span>
+                                {mesa.clienteNome} + {mesa.guests} pessoas
+                            </span>
                         </div>
-                        <div className="flex items-center text-sm text-gray-600">
-                            <Users className="h-4 w-4 mr-2" />
-                            <span>{mesa.guests} pessoas</span>
-                        </div>
-                        {mesa.time && (
+                        {mesa.usedAt && (
                             <div className="flex items-center text-sm text-gray-600">
                                 <Clock className="h-4 w-4 mr-2" />
-                                <span>{mesa.time}</span>
+                                <span>{mesa.usedAt}</span>
                             </div>
                         )}
-                        {mesa.server && (
+                        {mesa.waiter && (
                             <div className="flex items-center text-sm text-gray-600">
                                 <HandPlatter className="h-4 w-4 mr-2" />
-                                <span>{mesa.server}</span>
+                                <span>Garçon: {mesa.waiter}</span>
                             </div>
                         )}
-                        {mesa.products.processing.length === 0 && mesa.products.standby.length === 0 ? (
+
+                        <div className="flex items-center text-sm text-gray-600">
+                            <DollarSign className="h-4 w-4 mr-2" />
+                            <span>
+                                Total gasto: <span className="text-green-600">{sumTotalCost(mesa)}</span>
+                            </span>
+                        </div>
+
+                        {mesa.products.inKitchen.length === 0 && mesa.products.inCart.length === 0 ? (
                             <div className="flex items-center text-sm text-green-500">
                                 <Smile className="h-4 w-4 mr-2" />
                                 <span>Sem produtos pendentes</span>
                             </div>
-                        ) : mesa.products.processing.length > 0 ? (
+                        ) : mesa.products.inKitchen.length > 0 ? (
                             <div className="flex items-center text-sm text-yellow-500">
                                 <ChefHat className="h-4 w-4 mr-2" />
                                 <span>Há produtos em preparo na cozinha</span>
@@ -184,9 +162,9 @@ function TableCard(mesa: TablesType) {
                                             <Label htmlFor="server">Garçon responsavel sobre a mesa</Label>
                                             <Input
                                                 id="server"
-                                                value={tempCustomer.server}
+                                                value={tempCustomer.waiter}
                                                 onChange={(e) =>
-                                                    setTempCustomer({ ...tempCustomer, server: e.target.value })
+                                                    setTempCustomer({ ...tempCustomer, waiter: e.target.value })
                                                 }
                                             />
                                         </div>
@@ -198,15 +176,6 @@ function TableCard(mesa: TablesType) {
                             </Dialog>
                             <Button variant="outline" className="flex-1 " onClick={SeeDetails}>
                                 <ShoppingBag /> Ver carrinho
-                            </Button>
-                            <Button
-                                variant="outline"
-                                className="flex-1 bg-green-500 text-white hover:bg-green-500/80 hover:text-white"
-                                onClick={LiberarMesa}
-                                disabled={mesa.products.processing.length + mesa.products.standby.length != 0}
-                            >
-                                <Check />
-                                Liberar mesa
                             </Button>
                         </>
                     ) : (
@@ -250,9 +219,9 @@ function TableCard(mesa: TablesType) {
                                         <Label htmlFor="server">Qual será o garçon responsavel para essa mesa?</Label>
                                         <Input
                                             id="server"
-                                            value={tempCustomer.server}
+                                            value={tempCustomer.waiter}
                                             onChange={(e) =>
-                                                setTempCustomer({ ...tempCustomer, server: e.target.value })
+                                                setTempCustomer({ ...tempCustomer, waiter: e.target.value })
                                             }
                                         />
                                     </div>

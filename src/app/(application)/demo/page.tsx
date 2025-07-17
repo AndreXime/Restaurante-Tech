@@ -1,40 +1,16 @@
-'use client';
+import type { Metadata } from 'next';
+import AppBody from '@/store/AppBody';
+import MenuPage from '@/components/pages';
 
-import { Cart, MenuGrid, MenuHeader, SimpleHeader } from '@/components';
-import { DeliveryCart } from '@/components/delivery/deliveryCart';
-import { TableServicePage, KitchenPage, DeliveryPage, SettingsPage, AccountingPage } from '@/components/pages';
-import { useNavStore } from '@/store/navStore';
+export const metadata: Metadata = {
+    title: 'Restaurante Tech',
+    description: 'O restaurante mais tecnologico do mundo',
+};
 
-export default function MenuPage() {
-    const activeTab = useNavStore((state) => state.activeTab);
-
-    const ActiveTab = () => {
-        switch (activeTab) {
-            case 'Serviços de Mesa':
-                return <TableServicePage />;
-            case 'Contabilidade':
-                return <AccountingPage />;
-            case 'Cozinha':
-                return <KitchenPage />;
-            case 'Entregas':
-                return <DeliveryPage />;
-            case 'Configurações':
-                return <SettingsPage />;
-            case 'Cardápio':
-                return <MenuGrid />;
-            case 'Criar Delivery/Retirada':
-                return <DeliveryCart />;
-            default:
-                return <Cart />;
-        }
-    };
-
+export default function RootPageDemo() {
     return (
-        <div className="flex-1 flex flex-col overflow-hidden">
-            {activeTab == 'Cardápio' || activeTab == 'Carrinho' ? <MenuHeader /> : <SimpleHeader title={activeTab} />}
-            <div className="flex-1 flex flex-col overflow-auto space-y-4 p-3">
-                <ActiveTab />
-            </div>
-        </div>
+        <AppBody demo>
+            <MenuPage />
+        </AppBody>
     );
 }

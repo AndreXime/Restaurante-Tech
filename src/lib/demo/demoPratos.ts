@@ -39,4 +39,14 @@ export const demoPratos = [
         image: '/Cachorro-Quente Americano.png',
         category: ['Fast Food', 'Comida de Rua'],
     },
+    {
+        title: 'Burrito Mexicano',
+        image: '/Burrito Mexicano.png',
+        category: ['Mexicana', 'Comida de Rua'],
+    },
+    {
+        title: 'Waffles com Frutas',
+        image: '/Waffles com Frutas.png',
+        category: ['Café da manhã', 'Sobremesas'],
+    },
 ];

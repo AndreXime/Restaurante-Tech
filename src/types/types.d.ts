@@ -1,136 +1,96 @@
-import { LucideIcon } from 'lucide-react';
+// Para Mesas
+interface TablesType {
+    id: number;
+    status: 'ocupada' | 'livre';
+    mesaNome: string;
+    clienteNome: string;
 
-declare global {
-    // Para Mesas
-    interface TablesType {
-        id: number;
-        status: 'ocupada' | 'livre';
-        guests: number;
-        time: string;
-        server: string;
-        hidden?: boolean;
-        mesaNome: string;
-        clienteNome: string;
-        products: {
-            standby: FoodCartType[];
-            processing: FoodCartType[];
-            done: FoodCartType[];
-        };
-    }
+    usedAt: string;
+    guests: number;
+    waiter: string;
+    hidden?: boolean;
 
-    // Para Cozinha
-    interface KitchenOrderType {
-        id: string;
-        table: string; // Atributo mesaNome que é unico de TablesType
-        time: string;
-        clientName?: string;
-        server: string;
-        orderItems: Array<{
-            name: string;
-            quantity: number;
-            notes?: string;
-        }>;
+    products: {
+        inCart: FoodCartType[];
+        inKitchen: FoodCartType[];
+        alreadyEaten: FoodCartType[];
+    };
+}
 
-        // Dados extras para delivery
-        isDelivery?: true;
-        deliveryAddress?: string;
-        deliveryPhone?: string;
-        paymentMethod?: string;
+// Para Cozinha
+interface KitchenOrderType {
+    id: number;
+    type: 'table' | 'delivery';
+    ownerId: number;
+    ownerName: string; // Nome da mesa ou nome do client se for delivery
 
-        createdAt: string; // pedido enviado pra cozinha
-        startedAt?: string; // cozinha começou a preparar
-        endedAt?: string; // cozinha terminou
-    }
+    chef: string;
+    orderItems: FoodCartType[];
 
-    // Para Entregas
-    interface DeliveryType {
-        id: string;
-        customer: string;
-        address: string;
-        phone: string;
+    createdAt: string; // pedido enviado pra cozinha
+    startedAt?: string; // cozinha começou a preparar
+    endedAt?: string; // cozinha terminou
+}
+
+// Para Entregas
+interface DeliveryType {
+    id: number;
+    inCart: FoodCartType[];
+    kitchenOrderId?: number; // único pedido enviado à cozinha
+    type: 'delivery' | 'takeout';
+
+    customer?: string;
+    address?: string;
+    phone?: string;
+
+    payments: {
         items: number;
         total: number;
-        time: string;
-        deliveryPerson?: string;
+        type: 'dinheiro' | 'cartao' | 'pix';
+    };
 
-        createdAt: string; // delivery criado (após endedAt da cozinha)
-        dispatchedAt?: string; // saiu pra entrega
-        deliveredAt?: string; // entregue com sucesso
-    }
+    deliveryPerson?: string;
 
-    // Para o Cardapio
-    interface CardapioType {
-        categorias: CategoriesType[];
-        pratos: FoodType[];
-    }
+    startedAt?: string; // delivery criado (após endedAt da cozinha)
+    dispatchedAt?: string; // saiu pra entrega
+    deliveredAt?: string; // entregue com sucesso
+}
 
-    // Para configuração
-    interface ConfigType {
-        geralData: GeneralDataType;
-        funcionarios: FuncionariosType[];
-    }
+// Para o Cardapio
+interface CardapioType {
+    categorias: CategoriesType[];
+    pratos: CardapioFoodType[];
+}
 
-    // Para contabilidade
-    interface ContabilidadeType {
-        resumo: ResumoAccountingType[];
-        transacoes: TransactionsType[];
-    }
+// Para configuração
+interface ConfigType {
+    geralData: GeneralDataType;
+    funcionarios: FuncionariosType[];
+}
 
-    /* Tipos auxiliares  */
+// Para contabilidade
+interface ContabilidadeType {
+    resumo: ResumoAccountingType[];
+    transacoes: TransactionsType[];
+}
 
-    interface FoodType {
-        id: number;
-        image: string;
-        title: string;
-        price: number;
-        discount?: number;
-        category: string[];
-        status: string;
-    }
+/* Tipos auxiliares  */
 
-    interface FoodCartType {
-        id: number;
-        image: string;
-        title: string;
-        price: number;
-        quantity: number;
-    }
+interface CardapioFoodType {
+    id: number;
+    image: string;
+    title: string;
+    price: number;
+    discount?: number;
+    category: string[];
+    status: string;
+}
 
-    interface ResumoAccountingType {
-        title: 'Vendas Totais' | 'Pedidos' | 'Valor Médio por Pedido' | 'Despesas';
-        value: string;
-        change: string;
-        trend: 'up' | 'down';
-    }
-
-    interface TransactionsType {
-        id: string;
-        description: string;
-        amount: number;
-        type: 'entrada' | 'saída';
-        date: string;
-    }
-
-    interface CategoriesType {
-        id: number;
-        icon: LucideIcon;
-        label: string;
-        items: string;
-    }
-
-    interface FuncionariosType {
-        id: number;
-        name: string;
-        role: string;
-        status: 'Ativo' | 'Inativo';
-    }
-
-    interface GeneralDataType {
-        restaurantName: string;
-        address: string;
-        phone: string;
-        email: string;
-        taxRate: string;
-        currency: string;
-    }
+interface FoodCartType {
+    foodId: number;
+    orderId?: number;
+    title: string;
+    price: number;
+    quantity: number;
+    notes?: string;
 }

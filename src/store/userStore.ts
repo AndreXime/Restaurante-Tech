@@ -28,6 +28,7 @@ const indexedDBStorage: StateStorage = {
             'contabilidade',
             'cozinha',
             'mesaSelecionada',
+            'deliverySelecionado',
         ];
 
         for (const key of keysToSave) {
@@ -45,7 +46,8 @@ export const useDataStore = createWithEqualityFn<StoreState & StoreActions>()(
             contabilidade: restaurantVazio.contabilidade,
             config: restaurantVazio.config,
             cardapio: restaurantVazio.cardapio,
-            mesaSelecionada: restaurantVazio.mesaSelecionada,
+            mesaSelecionada: undefined,
+            deliverySelecionado: restaurantVazio.deliverySelecionado,
             mesas: [],
             cozinha: [],
             entrega: [],
@@ -82,15 +84,28 @@ export const useDataStore = createWithEqualityFn<StoreState & StoreActions>()(
                     entrega: typeof updater === 'function' ? updater(state.entrega) : updater,
                 })),
 
-            setMesaSelecionada: (updater) => {
+            setMesaSelecionada: (updater) =>
                 set((state) => {
                     const novaMesa = typeof updater === 'function' ? updater(state.mesaSelecionada) : updater;
 
-                    const mesasAtualizadas = state.mesas.map((mesa) => (mesa.id === novaMesa?.id ? novaMesa : mesa));
+                    const mesasAtualizadas = novaMesa
+                        ? state.mesas.map((mesa) => (mesa.id === novaMesa.id ? novaMesa : mesa))
+                        : state.mesas;
 
-                    return { mesaSelecionada: novaMesa, mesas: mesasAtualizadas };
-                });
-            },
+                    return {
+                        mesaSelecionada: novaMesa,
+                        mesas: mesasAtualizadas,
+                    };
+                }),
+
+            setDeliverySelecionado: (updater) =>
+                set((state) => {
+                    const novaEntrega = typeof updater === 'function' ? updater(state.deliverySelecionado) : updater;
+
+                    return {
+                        deliverySelecionado: novaEntrega,
+                    };
+                }),
 
             loadInitialData: async (demo = false) => {
                 set({ loading: true, isDemo: demo });
@@ -105,6 +120,7 @@ export const useDataStore = createWithEqualityFn<StoreState & StoreActions>()(
                         entrega: data.entrega ?? get().entrega,
                         cardapio: data.cardapio ?? get().cardapio,
                         mesaSelecionada: data.mesaSelecionada ?? get().mesaSelecionada,
+                        deliverySelecionado: data.deliverySelecionado ?? get().deliverySelecionado,
                     });
                 } catch (error) {
                     console.error('Zustand - Erro carregando dados:', error);

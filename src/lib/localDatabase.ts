@@ -19,6 +19,7 @@ class LocalDatabase {
                 db.createObjectStore('contabilidade');
                 db.createObjectStore('cozinha');
                 db.createObjectStore('mesaSelecionada');
+                db.createObjectStore('deliverySelecionado');
             },
         });
         return this.dbInstance;
@@ -31,15 +32,17 @@ class LocalDatabase {
 
     public async carregarClient(): Promise<ClientDataType> {
         const db = await this.getDb();
-        const [cardapio, mesas, config, entrega, contabilidade, cozinha, mesaSelecionada] = await Promise.all([
-            db.get('cardapio', 'dados'),
-            db.get('mesas', 'dados'),
-            db.get('config', 'dados'),
-            db.get('entrega', 'dados'),
-            db.get('contabilidade', 'dados'),
-            db.get('cozinha', 'dados'),
-            db.get('mesaSelecionada', 'dados'),
-        ]);
+        const [cardapio, mesas, config, entrega, contabilidade, cozinha, mesaSelecionada, deliverySelecionado] =
+            await Promise.all([
+                db.get('cardapio', 'dados'),
+                db.get('mesas', 'dados'),
+                db.get('config', 'dados'),
+                db.get('entrega', 'dados'),
+                db.get('contabilidade', 'dados'),
+                db.get('cozinha', 'dados'),
+                db.get('mesaSelecionada', 'dados'),
+                db.get('deliverySelecionado', 'dados'),
+            ]);
 
         return {
             cardapio,
@@ -49,6 +52,7 @@ class LocalDatabase {
             contabilidade,
             cozinha,
             mesaSelecionada,
+            deliverySelecionado,
         };
     }
 

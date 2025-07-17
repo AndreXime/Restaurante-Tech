@@ -7,14 +7,16 @@ import { useDataStore } from '@/store/userStore';
 import { useNavStore } from '@/store/navStore';
 
 export function MenuHeader() {
-    const mesaSelecionada = useDataStore((state) => state.mesaSelecionada);
     const mesas = useDataStore((state) => state.mesas);
+    const mesaSelecionada = useDataStore((state) => state.mesaSelecionada);
     const setMesaSelecionada = useDataStore((state) => state.setMesaSelecionada);
+    const deliverySelecionado = useDataStore((state) => state.deliverySelecionado);
 
     const setActiveTab = useNavStore((state) => state.setActiveTab);
     const activeTab = useNavStore((state) => state.activeTab);
     const setSearchItem = useNavStore((state) => state.setSearchItem);
     const toggleMobileMenu = useNavStore((state) => state.toggleMobileMenu);
+    const modoDelivery = useNavStore((state) => state.modoDelivery);
 
     const mesasOcupadas = mesas.filter((mesa) => mesa.status == 'ocupada');
 
@@ -31,7 +33,7 @@ export function MenuHeader() {
                     <div
                         className="relative cursor-pointer"
                         onClick={() => {
-                            if (mesaSelecionada?.mesaNome.includes('Delivery')) {
+                            if (modoDelivery) {
                                 setActiveTab('Criar Delivery/Retirada');
                                 return;
                             }
@@ -39,33 +41,39 @@ export function MenuHeader() {
                         }}
                     >
                         <LucideShoppingCart className="w-7 h-7" />
-                        {mesaSelecionada && mesaSelecionada.products.standby.length > 0 && (
+                        {mesaSelecionada && mesaSelecionada.products.inCart.length > 0 && (
                             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                                {mesaSelecionada.products.standby.length}
+                                {modoDelivery
+                                    ? deliverySelecionado.inCart.length
+                                    : mesaSelecionada.products.inCart.length}
                             </span>
                         )}
                     </div>
                 </div>
-                <Select
-                    value={mesaSelecionada?.mesaNome}
-                    onValueChange={(mesaNome) => {
-                        setMesaSelecionada(mesas.find((table) => table.mesaNome === mesaNome)!);
-                    }}
-                    defaultValue={undefined}
-                >
-                    <SelectTrigger data-placeholder={!mesaSelecionada || mesasOcupadas.length === 0}>
-                        <SelectValue
-                            placeholder={mesasOcupadas.length === 0 ? 'Nenhuma mesa ocupada' : 'Selecione uma mesa'}
-                        />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {mesasOcupadas.map((mesa) => (
-                            <SelectItem key={mesa.mesaNome} value={mesa.mesaNome} className="text-sm">
-                                {mesa.mesaNome} - {mesa.clienteNome}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+                {!modoDelivery ? (
+                    <Select
+                        value={mesaSelecionada?.mesaNome}
+                        onValueChange={(mesaNome) => {
+                            setMesaSelecionada(mesas.find((table) => table.mesaNome === mesaNome)!);
+                        }}
+                        defaultValue={undefined}
+                    >
+                        <SelectTrigger data-placeholder={!mesaSelecionada || mesasOcupadas.length === 0}>
+                            <SelectValue
+                                placeholder={mesasOcupadas.length === 0 ? 'Nenhuma mesa ocupada' : 'Selecione uma mesa'}
+                            />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {mesasOcupadas.map((mesa) => (
+                                <SelectItem key={mesa.mesaNome} value={mesa.mesaNome} className="text-sm">
+                                    {mesa.mesaNome} - {mesa.clienteNome}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                ) : (
+                    <div className="font-semibold text-lg px-4">Modo delivery</div>
+                )}
             </div>
             {activeTab === 'Cardápio' && (
                 <div className="flex-1 relative w-full">

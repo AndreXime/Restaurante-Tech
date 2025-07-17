@@ -4,45 +4,22 @@ import { CreditCard, QrCode, Banknote } from 'lucide-react';
 import { Button, Input, Label } from '@/components/ui';
 import Image from 'next/image';
 import { useDataStore } from '@/store/userStore';
-import { encontrarMenorIdDisponivel, getHours } from '@/lib/utils';
-import { useEffect, useState } from 'react';
+import { encontrarMenorIdDisponivel } from '@/lib/utils';
 import { useNavStore } from '@/store/navStore';
+import { getProductImage } from '@/lib/getProductImage';
+import { restaurantVazio } from '@/lib/restauranteVazio';
 
 export function DeliveryCart() {
-    const mesaSelecionada = useDataStore((state) => state.mesaSelecionada);
-    const setMesaSelecionada = useDataStore((state) => state.setMesaSelecionada);
-    const mesas = useDataStore((state) => state.mesas);
-    const setActiveTab = useNavStore((state) => state.setActiveTab);
+    const deliverySelecionado = useDataStore((state) => state.deliverySelecionado);
+    const setDeliverySelecionado = useDataStore((state) => state.setDeliverySelecionado);
+    const entrega = useDataStore((state) => state.entrega);
 
-    const [tempCustomer, setTempCustomer] = useState({
-        clienteNome: '',
-        type: '',
-        endereco: '',
-        pagamento: '',
-        phone: '',
-    });
+    const setActiveTab = useNavStore((state) => state.setActiveTab);
 
     const setCozinha = useDataStore((state) => state.setCozinha);
     const cozinha = useDataStore((state) => state.cozinha);
 
-    useEffect(() => {
-        const mesaVirtual = mesas.find((m) => m.id === -1);
-        if (mesaVirtual) {
-            setMesaSelecionada({ ...mesaVirtual });
-            setTempCustomer({ ...tempCustomer, clienteNome: mesaVirtual.clienteNome || 'Desconhecido' });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        setMesaSelecionada((prev) => {
-            if (!prev) return prev;
-            return { ...prev, clienteNome: tempCustomer.clienteNome };
-        });
-    }, [tempCustomer, setMesaSelecionada]);
-
-    const productsStandby = mesaSelecionada?.products.standby || [];
-
+    const productsStandby = deliverySelecionado?.inCart || [];
     const subtotalStandby = productsStandby.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     const subTotal = subtotalStandby;
@@ -50,34 +27,31 @@ export function DeliveryCart() {
     const total = subTotal + tax;
 
     async function EnviarCozinha() {
+        const newId = encontrarMenorIdDisponivel(entrega);
+
         const novoPedido: KitchenOrderType = {
             id: encontrarMenorIdDisponivel(cozinha),
-            table: 'Delivery',
-            isDelivery: true,
-            clientName: tempCustomer.clienteNome,
-            deliveryAddress: tempCustomer.endereco,
-            deliveryPhone: tempCustomer.endereco,
-            paymentMethod: tempCustomer.type,
-            time: getHours(),
-            server: 'João',
+            type: 'delivery',
+            ownerId: newId,
+            ownerName: deliverySelecionado?.customer || 'Desconhecido',
+            chef: 'João',
             createdAt: new Date().toISOString(),
             startedAt: new Date().toISOString(),
             orderItems: productsStandby.map((item) => {
-                return { name: item.title, quantity: item.quantity };
+                return { foodId: item.foodId, title: item.title, price: item.price, quantity: item.quantity };
             }),
         };
         setCozinha((prev) => [...prev, novoPedido]);
-        setMesaSelecionada((prev) => {
-            if (!prev) return prev;
-            return { ...prev, clienteNome: '', products: { ...prev.products, standby: [] } };
-        });
+        setDeliverySelecionado(restaurantVazio.deliverySelecionado);
     }
 
     return (
         <div className="bg-white border-l flex flex-col h-full">
             <div className="flex-1 overflow-auto p-6 min-h-[500px]">
-                {!mesaSelecionada && (
-                    <h2 className="text-xl font-bold text-center">Nenhuma mesa valida ocupada foi selecionada</h2>
+                {!deliverySelecionado && (
+                    <h2 className="font-bold text-2xl text-center p-10 w-full col-span-full">
+                        Nenhuma mesa valida ocupada foi selecionada
+                    </h2>
                 )}
                 <div className="space-y-4">
                     {productsStandby.length != 0 ? (
@@ -88,18 +62,12 @@ export function DeliveryCart() {
                             ))}
                         </div>
                     ) : (
-                        <h2 className="text-xl font-bold pb-4">
-                            Selecione{' '}
-                            <span
-                                className="text-blue-600 cursor-pointer"
-                                onClick={() => {
-                                    setActiveTab('Cardápio');
-                                }}
-                            >
-                                Delivery
-                            </span>{' '}
-                            no cardapio para adicionar ao carrinho
-                        </h2>
+                        <button
+                            onClick={() => setActiveTab('Cardápio', true)}
+                            className="text-indigo-600 font-bold text-2xl text-center p-4 w-full cursor-pointer"
+                        >
+                            Clique para ir no Cardápio no modo delivery
+                        </button>
                     )}
                 </div>
             </div>
@@ -127,24 +95,36 @@ export function DeliveryCart() {
                                 <Label htmlFor="customer-name">Nome do Cliente</Label>
                                 <Input
                                     id="customer-name"
-                                    value={tempCustomer.clienteNome}
-                                    onChange={(e) => setTempCustomer({ ...tempCustomer, clienteNome: e.target.value })}
+                                    defaultValue={deliverySelecionado?.customer}
+                                    onChange={(e) =>
+                                        setDeliverySelecionado((prev) => {
+                                            return { ...prev, clienteNome: e.target.value };
+                                        })
+                                    }
                                 />
                             </div>
                             <div className="space-y-2 col-span-full md:col-span-1">
                                 <Label htmlFor="server">Telefone</Label>
                                 <Input
                                     id="server"
-                                    value={tempCustomer.phone}
-                                    onChange={(e) => setTempCustomer({ ...tempCustomer, phone: e.target.value })}
+                                    defaultValue={deliverySelecionado?.phone}
+                                    onChange={(e) =>
+                                        setDeliverySelecionado((prev) => {
+                                            return { ...prev, phone: e.target.value };
+                                        })
+                                    }
                                 />
                             </div>
                             <div className="space-y-2 w-full col-span-full md:col-span-2">
                                 <Label htmlFor="server">Endereco</Label>
                                 <Input
                                     id="server"
-                                    value={tempCustomer.endereco}
-                                    onChange={(e) => setTempCustomer({ ...tempCustomer, endereco: e.target.value })}
+                                    defaultValue={deliverySelecionado?.address}
+                                    onChange={(e) =>
+                                        setDeliverySelecionado((prev) => {
+                                            return { ...prev, endereco: e.target.value };
+                                        })
+                                    }
                                 />
                             </div>
                         </div>
@@ -156,12 +136,13 @@ export function DeliveryCart() {
                                 size={'lg'}
                                 variant="outline"
                                 className={`flex flex-row items-center py-2 w-full ${
-                                    tempCustomer.type == 'Retirar' &&
+                                    deliverySelecionado?.type == 'takeout' &&
                                     'bg-green-600 hover:bg-green-600 hover:text-white text-white'
                                 }`}
                                 onClick={() =>
-                                    setTempCustomer((prev) => {
-                                        return { ...prev, type: 'Retirar' };
+                                    setDeliverySelecionado((prev) => {
+                                        if (!prev) return prev;
+                                        return { ...prev, type: 'takeout' };
                                     })
                                 }
                             >
@@ -172,12 +153,13 @@ export function DeliveryCart() {
                                 size={'lg'}
                                 variant="outline"
                                 className={`flex flex-row items-center py-2 w-full ${
-                                    tempCustomer.type == 'Entregar' &&
+                                    deliverySelecionado?.type == 'delivery' &&
                                     'bg-green-600 hover:bg-green-600 hover:text-white text-white'
                                 }`}
                                 onClick={() =>
-                                    setTempCustomer((prev) => {
-                                        return { ...prev, type: 'Entregar' };
+                                    setDeliverySelecionado((prev) => {
+                                        if (!prev) return prev;
+                                        return { ...prev, type: 'delivery' };
                                     })
                                 }
                             >
@@ -192,11 +174,13 @@ export function DeliveryCart() {
                             <Button
                                 variant="outline"
                                 className={`flex flex-row items-center py-2  ${
-                                    tempCustomer.pagamento == 'Dinheiro' &&
+                                    deliverySelecionado?.payments.type == 'dinheiro' &&
                                     'bg-green-600 hover:bg-green-600 hover:text-white text-white'
                                 }`}
                                 onClick={() =>
-                                    setTempCustomer((prev) => {
+                                    setDeliverySelecionado((prev) => {
+                                        if (!prev) return prev;
+
                                         return { ...prev, pagamento: 'Dinheiro' };
                                     })
                                 }
@@ -207,11 +191,13 @@ export function DeliveryCart() {
                             <Button
                                 variant="outline"
                                 className={`flex flex-row items-center py-2  ${
-                                    tempCustomer.pagamento == 'Cartao' &&
+                                    deliverySelecionado?.payments.type == 'cartao' &&
                                     'bg-green-600 hover:bg-green-600 hover:text-white text-white'
                                 }`}
                                 onClick={() =>
-                                    setTempCustomer((prev) => {
+                                    setDeliverySelecionado((prev) => {
+                                        if (!prev) return prev;
+
                                         return { ...prev, pagamento: 'Cartao' };
                                     })
                                 }
@@ -222,11 +208,13 @@ export function DeliveryCart() {
                             <Button
                                 variant="outline"
                                 className={`flex flex-row items-center py-2  ${
-                                    tempCustomer.pagamento == 'Pix' &&
+                                    deliverySelecionado?.payments.type == 'pix' &&
                                     'bg-green-600 hover:bg-green-600 hover:text-white text-white'
                                 }`}
                                 onClick={() =>
-                                    setTempCustomer((prev) => {
+                                    setDeliverySelecionado((prev) => {
+                                        if (!prev) return prev;
+
                                         return { ...prev, pagamento: 'Pix' };
                                     })
                                 }
@@ -253,7 +241,7 @@ function CartItem(item: FoodCartType) {
     return (
         <div className="flex items-center gap-3 mb-4">
             <Image
-                src={item.image}
+                src={getProductImage(item.foodId) || ''}
                 alt={item.title}
                 width={500}
                 height={500}

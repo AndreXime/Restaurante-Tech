@@ -27,7 +27,11 @@ export function DeliveryOrders() {
             </TabsList>
 
             <TabsContent value="pending" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {pendingOrders.length == 0 && <h2 className="font-bold text-lg ml-2">Nenhuma entrega pendente</h2>}
+                {pendingOrders.length == 0 && (
+                    <h2 className="font-bold text-2xl text-center p-10 w-full col-span-full">
+                        Nenhuma entrega pendente
+                    </h2>
+                )}
 
                 {pendingOrders.map((order) => (
                     <DeliveryOrderCard key={order.id} order={order} />
@@ -36,7 +40,9 @@ export function DeliveryOrders() {
 
             <TabsContent value="inProgress" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {inProgressOrders.length == 0 && (
-                    <h2 className="font-bold text-lg ml-2">Nenhuma entrega em andamento</h2>
+                    <h2 className="font-bold text-2xl text-center p-10 w-full col-span-full">
+                        Nenhuma entrega em andamento
+                    </h2>
                 )}
 
                 {inProgressOrders.map((order) => (

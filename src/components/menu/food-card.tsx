@@ -3,85 +3,120 @@ import { Button } from '@/components/ui/button';
 import { Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { useDataStore } from '@/store/userStore';
+import { useNavStore } from '@/store/navStore';
 
-interface FoodCardProps {
-    id: number;
-    image: string;
-    title: string;
-    price: number;
-    discount?: number;
-}
-
-export function FoodCard({ id, image, title, price, discount }: FoodCardProps) {
+export function FoodCard({ id, image, title, price, discount }: CardapioFoodType) {
     const mesaSelecionada = useDataStore((state) => state.mesaSelecionada);
     const setMesaSelecionada = useDataStore((state) => state.setMesaSelecionada);
+    const deliverySelecionado = useDataStore((state) => state.deliverySelecionado);
+    const setDeliverySelecionado = useDataStore((state) => state.setDeliverySelecionado);
+
+    const modoDelivery = useNavStore((state) => state.modoDelivery);
 
     // Encontra o item pelo id para obter a quantidade atual
-    const existingItem = mesaSelecionada?.products.standby.find((item) => item.id === id);
+    const existingItem = modoDelivery
+        ? deliverySelecionado.inCart.find((item) => item.foodId === id)
+        : mesaSelecionada?.products.inCart.find((item) => item.foodId === id);
     const qtd = existingItem ? existingItem.quantity : 0;
 
     // Função para incrementar a quantidade
     const handleIncrease = () => {
-        setMesaSelecionada((prev) => {
-            if (!prev) return prev;
-            const existingItemInPrev = prev.products.standby.find((item) => item.id === id);
+        if (modoDelivery) {
+            setDeliverySelecionado((prev) => {
+                if (!prev) return prev;
 
-            if (existingItemInPrev) {
-                return {
-                    ...prev,
-                    products: {
-                        done: prev.products.done,
-                        processing: prev.products.processing,
-                        standby: prev.products.standby.map((item) =>
-                            item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+                const existingItem = prev.inCart.find((item) => item.foodId === id);
+                if (existingItem) {
+                    return {
+                        ...prev,
+                        inCart: prev.inCart.map((item) =>
+                            item.foodId === id ? { ...item, quantity: item.quantity + 1 } : item
                         ),
-                    },
+                    };
+                }
+                return {
+                    ...prev,
+                    inCart: [...prev.inCart, { foodId: id, title, price, quantity: 1 }],
                 };
-            } else {
+            });
+        } else {
+            setMesaSelecionada((prev) => {
+                if (!prev) return prev;
+
+                const existingItem = prev.products.inCart.find((item) => item.foodId === id);
+                if (existingItem) {
+                    return {
+                        ...prev,
+                        products: {
+                            ...prev.products,
+                            inCart: prev.products.inCart.map((item) =>
+                                item.foodId === id ? { ...item, quantity: item.quantity + 1 } : item
+                            ),
+                        },
+                    };
+                }
                 return {
                     ...prev,
                     products: {
-                        done: prev.products.done,
-                        processing: prev.products.processing,
-                        standby: [...prev.products.standby, { id, image, title, price, quantity: 1 }],
+                        ...prev.products,
+                        inCart: [...prev.products.inCart, { foodId: id, title, price, quantity: 1 }],
                     },
                 };
-            }
-        });
+            });
+        }
     };
 
     // Função para decrementar a quantidade
     const handleDecrease = () => {
-        setMesaSelecionada((prev) => {
-            if (!prev) return prev;
+        if (modoDelivery) {
+            setDeliverySelecionado((prev) => {
+                if (!prev) return prev;
 
-            const existingItemInPrev = prev.products.standby.find((item) => item.id === id);
-            if (!existingItemInPrev) return prev;
+                const existingItem = prev.inCart.find((item) => item.foodId === id);
+                if (!existingItem) return prev;
 
-            // Remove o item se for o ultimo
-            if (existingItemInPrev.quantity === 1) {
-                return {
-                    ...prev,
-                    products: {
-                        done: prev.products.done,
-                        processing: prev.products.processing,
-                        standby: prev.products.standby.filter((item) => item.id !== id),
-                    },
-                };
-            } else {
-                // Diminui a quantidade
-                return {
-                    ...prev,
-                    products: {
-                        done: prev.products.done,
-                        processing: prev.products.processing,
-                        standby: prev.products.standby.map((item) =>
-                            item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+                if (existingItem.quantity === 1) {
+                    return {
+                        ...prev,
+                        inCart: prev.inCart.filter((item) => item.foodId !== id),
+                    };
+                } else {
+                    return {
+                        ...prev,
+                        inCart: prev.inCart.map((item) =>
+                            item.foodId === id ? { ...item, quantity: item.quantity - 1 } : item
                         ),
-                    },
-                };
-            }
-        });
+                    };
+                }
+            });
+        } else {
+            setMesaSelecionada((prev) => {
+                if (!prev) return prev;
+
+                const existingItem = prev.products.inCart.find((item) => item.foodId === id);
+                if (!existingItem) return prev;
+
+                if (existingItem.quantity === 1) {
+                    return {
+                        ...prev,
+                        products: {
+                            ...prev.products,
+                            inCart: prev.products.inCart.filter((item) => item.foodId !== id),
+                        },
+                    };
+                } else {
+                    return {
+                        ...prev,
+                        products: {
+                            ...prev.products,
+                            inCart: prev.products.inCart.map((item) =>
+                                item.foodId === id ? { ...item, quantity: item.quantity - 1 } : item
+                            ),
+                        },
+                    };
+                }
+            });
+        }
     };
 
     return (

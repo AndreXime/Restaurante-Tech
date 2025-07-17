@@ -14,12 +14,13 @@ type NavState = {
     mobileMenu: boolean;
     searchItem: string;
     activeTab: possibleTabs;
+    modoDelivery: boolean;
 };
 
 type NavActions = {
     toggleMobileMenu: () => void;
     setSearchItem: (item: string) => void;
-    setActiveTab: (tab: possibleTabs) => void;
+    setActiveTab: (tab: possibleTabs, keepModoDelivery?: boolean) => void;
     resetNav: () => void;
 };
 
@@ -27,6 +28,7 @@ const initialState: NavState = {
     mobileMenu: false,
     searchItem: '',
     activeTab: 'Cardápio',
+    modoDelivery: false,
 };
 
 // Cria o store
@@ -37,7 +39,11 @@ export const useNavStore = create<NavState & NavActions>((set) => ({
 
     setSearchItem: (item) => set({ searchItem: item }),
 
-    setActiveTab: (tab) => set({ activeTab: tab }),
+    setActiveTab: (tab, keepModoDelivery = false) =>
+        set(() => ({
+            activeTab: tab,
+            modoDelivery: keepModoDelivery,
+        })),
 
     resetNav: () => set(initialState),
 }));

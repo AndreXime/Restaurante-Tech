@@ -4,7 +4,9 @@ import { CreditCard, QrCode, Banknote } from 'lucide-react';
 import { Button } from '@/components/ui';
 import Image from 'next/image';
 import { useDataStore } from '@/store/userStore';
-import { encontrarMenorIdDisponivel, getHours } from '@/lib/utils';
+import { encontrarMenorIdDisponivel } from '@/lib/utils';
+import { getProductImage } from '@/lib/getProductImage';
+import { useNavStore } from '@/store/navStore';
 
 export function Cart() {
     const mesaSelecionada = useDataStore((state) => state.mesaSelecionada);
@@ -13,9 +15,9 @@ export function Cart() {
     const setCozinha = useDataStore((state) => state.setCozinha);
     const cozinha = useDataStore((state) => state.cozinha);
 
-    const productsStandby = mesaSelecionada?.products.standby || [];
-    const productsProcessing = mesaSelecionada?.products.processing || [];
-    const productsDone = mesaSelecionada?.products.done || [];
+    const productsStandby = mesaSelecionada?.products.inCart || [];
+    const productsProcessing = mesaSelecionada?.products.inKitchen || [];
+    const productsDone = mesaSelecionada?.products.alreadyEaten || [];
 
     const subtotalStandby = productsStandby.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const subtotalProcessing = productsProcessing.reduce((acc, item) => acc + item.price * item.quantity, 0);
@@ -26,21 +28,59 @@ export function Cart() {
     const total = subTotal + tax;
 
     async function EnviarCozinha() {
+        const orderId = encontrarMenorIdDisponivel(cozinha);
         const novoPedido: KitchenOrderType = {
-            id: encontrarMenorIdDisponivel(cozinha),
-            table: mesaSelecionada?.mesaNome || '',
-            time: getHours(),
-            server: 'João',
+            id: orderId,
+            type: 'table',
+            ownerId: mesaSelecionada?.id || -1,
+            ownerName: mesaSelecionada?.mesaNome || '',
+            chef: 'João',
             createdAt: new Date().toISOString(),
             orderItems: productsStandby.map((item) => {
-                return { name: item.title, quantity: item.quantity };
+                return {
+                    orderId: orderId,
+                    foodId: item.foodId,
+                    title: item.title,
+                    price: item.price,
+                    quantity: item.quantity,
+                };
             }),
         };
         setCozinha((prev) => [...prev, novoPedido]);
         setMesaSelecionada((prev) => {
             if (!prev) return prev;
-            return { ...prev, products: { standby: [], processing: productsStandby, done: prev.products.done } };
+            prev.products.inKitchen.push(...productsStandby);
+
+            return {
+                ...prev,
+                products: {
+                    inCart: [],
+                    inKitchen: prev.products.inKitchen,
+                    alreadyEaten: prev.products.alreadyEaten,
+                },
+            };
         });
+    }
+
+    async function LiberarMesa() {
+        if (!mesaSelecionada) return;
+        const setMesas = useDataStore.getState().setMesas;
+        const setActiveTab = useNavStore.getState().setActiveTab;
+
+        const empty: TablesType = {
+            ...mesaSelecionada,
+            status: 'livre',
+            guests: 0,
+            products: { inCart: [], inKitchen: [], alreadyEaten: [] },
+            usedAt: '',
+            clienteNome: '',
+            waiter: '',
+        };
+
+        setMesas((prev) => prev.map((table) => (table.id !== mesaSelecionada.id ? table : empty)));
+
+        setMesaSelecionada(undefined);
+        setActiveTab('Serviços de Mesa');
     }
 
     return (
@@ -129,8 +169,12 @@ export function Cart() {
                         <span className="text-xs">QR Code</span>
                     </Button>
                 </div>
-                <Button className="w-full bg-green-600 hover:bg-green-700 text-white h-12 mt-0 font-bold">
-                    Fechar conta {mesaSelecionada?.mesaNome.includes('Mesa') && 'no local'}
+                <Button
+                    className="w-full bg-green-600 hover:bg-green-700 text-white h-12 mt-0 font-bold"
+                    onClick={LiberarMesa}
+                    disabled={productsProcessing.length > 0 || productsStandby.length > 0}
+                >
+                    Fechar conta e liberar mesa
                 </Button>
             </div>
         </div>
@@ -141,7 +185,7 @@ function CartItem(item: FoodCartType) {
     return (
         <div className="flex items-center gap-3 mb-4">
             <Image
-                src={item.image}
+                src={getProductImage(item.foodId) || ''}
                 alt={item.title}
                 width={500}
                 height={500}

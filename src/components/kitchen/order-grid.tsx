@@ -1,17 +1,16 @@
 import { OrderCard } from './order-card';
 import { useDataStore } from '@/store/userStore';
-import { getPedidoStatus } from '@/lib/utils';
 
 export function OrderGrid() {
     const Cozinha = useDataStore((state) => state.cozinha);
 
-    const pendingOrders = Cozinha.filter((order) => getPedidoStatus(order) == 'pendente');
-
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {pendingOrders.length == 0 && <h2 className="font-bold text-lg ml-2">Nenhum pedido pendente</h2>}
+            {Cozinha.length == 0 && (
+                <h2 className="font-bold text-2xl text-center p-10 w-full col-span-full">Nenhum pedido pendente</h2>
+            )}
 
-            {pendingOrders.map((order, index) => (
+            {Cozinha.map((order, index) => (
                 <OrderCard key={index} order={order} />
             ))}
         </div>

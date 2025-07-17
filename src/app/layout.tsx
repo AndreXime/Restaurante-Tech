@@ -1,7 +1,6 @@
-import '../../globals.css';
+import './globals.css';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
-import AppBody from '@/store/AppBody';
 
 export const metadata: Metadata = {
     title: 'Restaurante Tech',
@@ -11,9 +10,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="pt-BR">
-            <body>
-                <AppBody demo>{children}</AppBody>
-            </body>
+            <body>{children}</body>
         </html>
     );
 }
