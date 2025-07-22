@@ -2,11 +2,12 @@
 
 import { createWithEqualityFn } from 'zustand/traditional';
 import { shallow } from 'zustand/shallow';
-import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
-import { restaurantVazio } from '@/lib/restauranteVazio';
-import { localDatabase } from '@/lib/localDatabase';
+import { persist, createJSONStorage, StateStorage, devtools } from 'zustand/middleware';
+import { restaurantVazio } from '@/shared/lib/dataState/restauranteVazio';
+import { localDatabase } from '@/shared/lib/dataState/localDatabase';
 import { ClientDataKeys } from '@/types/ClientDataType';
-import { StoreState, StoreActions } from './userStoreType';
+import { StoreState, StoreActions } from '@/types/userStoreType';
+import { CalculateResumo } from '@/modules/accounting/accountingActions';
 
 const indexedDBStorage: StateStorage = {
     getItem: async (): Promise<string | null> => {
@@ -27,7 +28,7 @@ const indexedDBStorage: StateStorage = {
             'entrega',
             'contabilidade',
             'cozinha',
-            'mesaSelecionada',
+            'mesaSelecionadaId',
             'deliverySelecionado',
         ];
 
@@ -41,98 +42,93 @@ const indexedDBStorage: StateStorage = {
 };
 
 export const useDataStore = createWithEqualityFn<StoreState & StoreActions>()(
-    persist(
-        (set, get) => ({
-            contabilidade: restaurantVazio.contabilidade,
-            config: restaurantVazio.config,
-            cardapio: restaurantVazio.cardapio,
-            mesaSelecionada: undefined,
-            deliverySelecionado: restaurantVazio.deliverySelecionado,
-            mesas: [],
-            cozinha: [],
-            entrega: [],
-            loading: true,
-            isDemo: false,
+    devtools(
+        persist(
+            (set, get) => ({
+                ...restaurantVazio,
+                loading: true,
+                isDemo: false,
 
-            setContabilidade: (updater) =>
-                set((state) => ({
-                    contabilidade: typeof updater === 'function' ? updater(state.contabilidade) : updater,
-                })),
+                setContabilidade: (updater) =>
+                    set((state) => {
+                        const updated = typeof updater === 'function' ? updater(state.contabilidade) : updater;
 
-            setConfig: (updater) =>
-                set((state) => ({
-                    config: typeof updater === 'function' ? updater(state.config) : updater,
-                })),
+                        const newResumo = CalculateResumo(updated.transacoes);
 
-            setCardapio: (updater) =>
-                set((state) => ({
-                    cardapio: typeof updater === 'function' ? updater(state.cardapio) : updater,
-                })),
+                        return {
+                            contabilidade: {
+                                ...updated,
+                                resumo: newResumo,
+                            },
+                        };
+                    }),
 
-            setMesas: (updater) =>
-                set((state) => ({
-                    mesas: typeof updater === 'function' ? updater(state.mesas) : updater,
-                })),
+                setConfig: (updater) =>
+                    set((state) => ({
+                        config: typeof updater === 'function' ? updater(state.config) : updater,
+                    })),
 
-            setCozinha: (updater) =>
-                set((state) => ({
-                    cozinha: typeof updater === 'function' ? updater(state.cozinha) : updater,
-                })),
+                setCardapio: (updater) =>
+                    set((state) => ({
+                        cardapio: typeof updater === 'function' ? updater(state.cardapio) : updater,
+                    })),
 
-            setEntrega: (updater) =>
-                set((state) => ({
-                    entrega: typeof updater === 'function' ? updater(state.entrega) : updater,
-                })),
+                setCozinha: (updater) =>
+                    set((state) => ({
+                        cozinha: typeof updater === 'function' ? updater(state.cozinha) : updater,
+                    })),
 
-            setMesaSelecionada: (updater) =>
-                set((state) => {
-                    const novaMesa = typeof updater === 'function' ? updater(state.mesaSelecionada) : updater;
+                setEntrega: (updater) =>
+                    set((state) => ({
+                        entrega: typeof updater === 'function' ? updater(state.entrega) : updater,
+                    })),
 
-                    const mesasAtualizadas = novaMesa
-                        ? state.mesas.map((mesa) => (mesa.id === novaMesa.id ? novaMesa : mesa))
-                        : state.mesas;
+                setMesas: (updater) =>
+                    set((state) => ({
+                        mesas: typeof updater === 'function' ? updater(state.mesas) : updater,
+                    })),
 
-                    return {
-                        mesaSelecionada: novaMesa,
-                        mesas: mesasAtualizadas,
-                    };
-                }),
+                setMesaSelecionadaId: (updater) =>
+                    set((state) => ({
+                        mesaSelecionadaId: typeof updater === 'function' ? updater(state.mesaSelecionadaId) : updater,
+                    })),
 
-            setDeliverySelecionado: (updater) =>
-                set((state) => {
-                    const novaEntrega = typeof updater === 'function' ? updater(state.deliverySelecionado) : updater;
+                setDeliverySelecionado: (updater) =>
+                    set((state) => ({
+                        deliverySelecionado:
+                            typeof updater === 'function' ? updater(state.deliverySelecionado) : updater,
+                    })),
 
-                    return {
-                        deliverySelecionado: novaEntrega,
-                    };
-                }),
+                loadInitialData: async (demo = false) => {
+                    set({ loading: true, isDemo: demo });
+                    try {
+                        const data = demo ? await localDatabase.carregarDemo() : await localDatabase.carregarClient();
 
-            loadInitialData: async (demo = false) => {
-                set({ loading: true, isDemo: demo });
-                try {
-                    const data = demo ? await localDatabase.carregarDemo() : await localDatabase.carregarClient();
+                        set({
+                            mesas: data.mesas ?? get().mesas,
+                            contabilidade: data.contabilidade ?? get().contabilidade,
+                            config: data.config ?? get().config,
+                            cozinha: data.cozinha ?? get().cozinha,
+                            entrega: data.entrega ?? get().entrega,
+                            cardapio: data.cardapio ?? get().cardapio,
+                            mesaSelecionadaId: data.mesaSelecionadaId ?? get().mesaSelecionadaId,
+                            deliverySelecionado: data.deliverySelecionado ?? get().deliverySelecionado,
+                        });
+                    } catch (error) {
+                        console.error('Zustand - Erro carregando dados:', error);
+                    } finally {
+                        set({ loading: false });
+                    }
+                },
+            }),
 
-                    set({
-                        mesas: data.mesas ?? get().mesas,
-                        contabilidade: data.contabilidade ?? get().contabilidade,
-                        config: data.config ?? get().config,
-                        cozinha: data.cozinha ?? get().cozinha,
-                        entrega: data.entrega ?? get().entrega,
-                        cardapio: data.cardapio ?? get().cardapio,
-                        mesaSelecionada: data.mesaSelecionada ?? get().mesaSelecionada,
-                        deliverySelecionado: data.deliverySelecionado ?? get().deliverySelecionado,
-                    });
-                } catch (error) {
-                    console.error('Zustand - Erro carregando dados:', error);
-                } finally {
-                    set({ loading: false });
-                }
-            },
-        }),
-        {
-            name: 'restaurante-storage',
-            storage: createJSONStorage(() => indexedDBStorage),
-        }
+            {
+                name: 'restaurante-storage',
+                storage: createJSONStorage(() => indexedDBStorage),
+            }
+        ),
+        { name: 'useDataStore' } // nome visível no Redux DevTools
     ),
+
     shallow
 );

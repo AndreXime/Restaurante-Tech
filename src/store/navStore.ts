@@ -8,7 +8,8 @@ export type possibleTabs =
     | 'Entregas'
     | 'Configurações'
     | 'Carrinho'
-    | 'Criar Delivery/Retirada';
+    | 'Criar Delivery/Retirada'
+    | 'Como usar?';
 
 type NavState = {
     mobileMenu: boolean;
