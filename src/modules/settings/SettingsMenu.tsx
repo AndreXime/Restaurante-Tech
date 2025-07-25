@@ -29,7 +29,6 @@ export function MenuSettings() {
     const categorias = useDataStore((state) => state.cardapio.categorias);
     const setCardapio = useDataStore((state) => state.setCardapio);
 
-    console.log(pratos);
     const [dialogPrato, setDialogPrato] = useState(false);
     const [dialogCategoria, setDialogCategoria] = useState(false);
 
@@ -113,9 +112,18 @@ export function MenuSettings() {
                     <div className="flex justify-end mb-4">
                         <Button
                             className="bg-green-600 hover:bg-green-700 cursor-pointer"
-                            onClick={() => setDialogPrato(true)}
+                            onClick={() => {
+                                if (categorias.length != 0) {
+                                    setDialogPrato(true);
+                                } else {
+                                    showMessage(
+                                        'Você precisa adicionar uma categoria primeiro para adicionar um produto',
+                                        'error'
+                                    );
+                                }
+                            }}
                         >
-                            <PlusCircle className="h-4 w-4 mr-2" />
+                            <PlusCircle className="h-4 w-4" />
                             Novo produto
                         </Button>
                     </div>
@@ -181,7 +189,7 @@ export function MenuSettings() {
                             className="bg-green-600 hover:bg-green-700 cursor-pointer"
                             onClick={() => setDialogCategoria(true)}
                         >
-                            <PlusCircle className="h-4 w-4 mr-2" />
+                            <PlusCircle className="h-4 w-4" />
                             Nova Categoria
                         </Button>
                     </div>

@@ -3,7 +3,7 @@ import { CreditCard, QrCode, Banknote } from 'lucide-react';
 import { Button } from '@/shared/ui';
 import { useDataStore } from '@/store/userStore';
 import { getProductImage } from '@/shared/lib/utils';
-import { CheckoutCurrentTable, SendCurrentTableOrderKitchen } from './menuActions';
+import { CheckoutCurrentTable, SendCurrentTableOrderKitchen } from './menuCartActions';
 
 export function Cart() {
     const mesas = useDataStore((state) => state.mesas);

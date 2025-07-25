@@ -1,136 +1,15 @@
 'use client';
 import { Card, Button } from '@/shared/ui';
 import { Minus, Plus } from 'lucide-react';
-import { useDataStore } from '@/store/userStore';
-import { useNavStore } from '@/store/navStore';
+
 type Props = {
     itemCurrent: CardapioFoodType;
-    carrinho: FoodCartType[] | undefined;
-    mesaAtual: TablesType | undefined;
+    qtd: number;
+    handleIncrease: () => void;
+    handleDecrease: () => void;
 };
-export function FoodCard({ itemCurrent, carrinho, mesaAtual }: Props) {
-    const setMesas = useDataStore((state) => state.setMesas);
-    const setDeliverySelecionado = useDataStore((state) => state.setDeliverySelecionado);
 
-    const modoDelivery = useNavStore((state) => state.modoDelivery);
-
-    // Encontra o item pelo id para obter a quantidade atual
-    const existingItem = carrinho?.find((item) => item.foodId === itemCurrent.id);
-    const qtd = existingItem ? existingItem.quantity : 0;
-
-    const handleIncrease = () => {
-        if (modoDelivery) {
-            setDeliverySelecionado((prev) => {
-                if (!prev) return prev;
-
-                const existingItem = prev.inCart.find((item) => item.foodId === itemCurrent.id);
-                if (existingItem) {
-                    return {
-                        ...prev,
-                        inCart: prev.inCart.map((item) =>
-                            item.foodId === itemCurrent.id ? { ...item, quantity: item.quantity + 1 } : item
-                        ),
-                    };
-                }
-                return {
-                    ...prev,
-                    inCart: [
-                        ...prev.inCart,
-                        { foodId: itemCurrent.id, title: itemCurrent.title, price: itemCurrent.price, quantity: 1 },
-                    ],
-                };
-            });
-        } else {
-            setMesas((prev) =>
-                prev.map((mesa) => {
-                    if (mesa.id != mesaAtual?.id) return mesa;
-
-                    const existingItem = mesa.products.inCart.find((item) => item.foodId === itemCurrent.id);
-                    if (existingItem) {
-                        return {
-                            ...mesa,
-                            products: {
-                                ...mesa.products,
-                                inCart: mesa.products.inCart.map((item) =>
-                                    item.foodId === itemCurrent.id ? { ...item, quantity: item.quantity + 1 } : item
-                                ),
-                            },
-                        };
-                    }
-                    return {
-                        ...mesa,
-                        products: {
-                            ...mesa.products,
-                            inCart: [
-                                ...mesa.products.inCart,
-                                {
-                                    foodId: itemCurrent.id,
-                                    title: itemCurrent.title,
-                                    price: itemCurrent.price,
-                                    quantity: 1,
-                                },
-                            ],
-                        },
-                    };
-                })
-            );
-        }
-    };
-
-    const handleDecrease = () => {
-        if (modoDelivery) {
-            setDeliverySelecionado((prev) => {
-                if (!prev) return prev;
-
-                const existingItem = prev.inCart.find((item) => item.foodId === itemCurrent.id);
-                if (!existingItem) return prev;
-
-                if (existingItem.quantity === 1) {
-                    return {
-                        ...prev,
-                        inCart: prev.inCart.filter((item) => item.foodId !== itemCurrent.id),
-                    };
-                } else {
-                    return {
-                        ...prev,
-                        inCart: prev.inCart.map((item) =>
-                            item.foodId === itemCurrent.id ? { ...item, quantity: item.quantity - 1 } : item
-                        ),
-                    };
-                }
-            });
-        } else {
-            setMesas((prev) =>
-                prev.map((mesa) => {
-                    if (mesa.id != mesaAtual?.id) return mesa;
-
-                    const existingItem = mesa.products.inCart.find((item) => item.foodId === itemCurrent.id);
-                    if (!existingItem) return mesa;
-
-                    if (existingItem.quantity === 1) {
-                        return {
-                            ...mesa,
-                            products: {
-                                ...mesa.products,
-                                inCart: mesa.products.inCart.filter((item) => item.foodId !== itemCurrent.id),
-                            },
-                        };
-                    } else {
-                        return {
-                            ...mesa,
-                            products: {
-                                ...mesa.products,
-                                inCart: mesa.products.inCart.map((item) =>
-                                    item.foodId === itemCurrent.id ? { ...item, quantity: item.quantity - 1 } : item
-                                ),
-                            },
-                        };
-                    }
-                })
-            );
-        }
-    };
-
+export function FoodCard({ itemCurrent, qtd, handleDecrease, handleIncrease }: Props) {
     return (
         <Card className="overflow-hidden pt-0 gap-4">
             <div className="relative">

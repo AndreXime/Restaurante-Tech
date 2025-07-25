@@ -4,19 +4,20 @@ type Message = {
     id: string;
     content: string;
     duration?: number;
+    status: 'success' | 'error';
 };
 
 type PopupState = {
     messages: Message[];
-    showMessage: (content: string, duration?: number) => void;
+    showMessage: (content: string, status?: Message['status'], duration?: number) => void;
 };
 
 export const usePopupStore = create<PopupState>((set) => ({
     messages: [],
 
-    showMessage: (content, duration = 4000) => {
+    showMessage: (content, status = 'success', duration = 5000) => {
         const id = crypto.randomUUID();
-        const newMsg = { id, content, duration };
+        const newMsg = { id, content, duration, status };
 
         set((state) => ({
             messages: [...state.messages, newMsg],
@@ -30,5 +31,5 @@ export const usePopupStore = create<PopupState>((set) => ({
     },
 }));
 
-export const showMessage = (content: string, duration?: number) =>
-    usePopupStore.getState().showMessage(content, duration);
+export const showMessage = (content: string, status?: Message['status'], duration?: number) =>
+    usePopupStore.getState().showMessage(content, status, duration);

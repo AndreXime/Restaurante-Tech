@@ -3,6 +3,7 @@ import { FoodCard } from './MenuFoodCard';
 import { useState } from 'react';
 import { useDataStore } from '@/store/userStore';
 import { useNavStore } from '@/store/navStore';
+import { handleDecrease, handleIncrease } from './menuFoodActions';
 
 export function MenuGrid() {
     const [ActiveCategory, setActiveCategory] = useState('Todos');
@@ -25,6 +26,8 @@ export function MenuGrid() {
     const mesaAtual = mesas.find((mesa) => mesa.id == mesaSelecionadaId);
 
     const carrinho = modoDelivery ? deliverySelecionado.inCart : mesaAtual?.products.inCart;
+
+    const qtdItensMap = new Map(carrinho?.map((item) => [item.foodId, item.quantity]) || []);
 
     return (
         <>
@@ -53,7 +56,13 @@ export function MenuGrid() {
                         </h2>
                     )}
                     {activeItems.map((item, index) => (
-                        <FoodCard key={index} itemCurrent={item} carrinho={carrinho} mesaAtual={mesaAtual} />
+                        <FoodCard
+                            key={index}
+                            itemCurrent={item}
+                            qtd={qtdItensMap.get(item.id) || 0}
+                            handleDecrease={() => handleDecrease(item, mesaAtual?.id)}
+                            handleIncrease={() => handleIncrease(item, mesaAtual?.id)}
+                        />
                     ))}
                 </div>
             </div>

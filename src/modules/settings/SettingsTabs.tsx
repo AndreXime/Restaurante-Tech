@@ -3,6 +3,7 @@ import { GeneralSettings } from './SettingsGeneral';
 import { UserSettings } from './SettingsFuncionarios';
 import { MenuSettings } from './SettingsMenu';
 import { EstastisticaSettings } from './SettingsStatistics';
+import SettingsTables from './SettingsTables';
 
 export function SettingsTabs() {
     return (
@@ -10,6 +11,7 @@ export function SettingsTabs() {
             <TabsList className="mb-4 gap-3">
                 <TabsTrigger value="general">Geral</TabsTrigger>
                 <TabsTrigger value="users">Funcionarios</TabsTrigger>
+                <TabsTrigger value="mesas">Mesas</TabsTrigger>
                 <TabsTrigger value="menu">Cardápio</TabsTrigger>
                 <TabsTrigger value="estastistica">Estastistica</TabsTrigger>
             </TabsList>
@@ -18,6 +20,14 @@ export function SettingsTabs() {
                 <Card>
                     <CardContent className="p-4">
                         <GeneralSettings />
+                    </CardContent>
+                </Card>
+            </TabsContent>
+
+            <TabsContent value="mesas">
+                <Card>
+                    <CardContent className="p-4">
+                        <SettingsTables />
                     </CardContent>
                 </Card>
             </TabsContent>

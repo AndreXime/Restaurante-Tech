@@ -24,6 +24,13 @@ export function removeCategoria(categoriaId: number) {
     }));
 }
 
+export function removeMesa(mesaId: number) {
+    const setCardapio = useDataStore.getState().setMesas;
+    setCardapio((prev) => ({
+        ...prev.filter((mesa) => mesa.id !== mesaId),
+    }));
+}
+
 export function createFuncionario(data: FuncionariosType) {
     const setConfig = useDataStore.getState().setConfig;
     setConfig((prev) => ({

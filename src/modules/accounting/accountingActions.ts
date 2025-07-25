@@ -2,8 +2,8 @@ import { useDataStore } from '@/store/userStore';
 
 /* É importado em outros modulos para gravar transações */
 export function RecordTransaction(data: Omit<TransactionsType, 'id'>) {
-    const { setContabilidade, contabilidade } = useDataStore.getState();
-    console.log(contabilidade);
+    const { setContabilidade } = useDataStore.getState();
+
     setContabilidade((prev) => ({
         resumo: prev.resumo,
         transacoes: [{ id: crypto.randomUUID(), ...data }, ...prev.transacoes],

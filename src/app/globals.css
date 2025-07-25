@@ -85,13 +85,20 @@
     }
 }
 
-.popup-message {
-    background-color: #22c55e;
+@utility popup-message {
     color: white;
     padding: 0.75rem 1.25rem;
     border-radius: 0.375rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     animation: fadeInOut 3s ease-in-out forwards;
+}
+
+.popup-message-success {
+    @apply popup-message bg-[#22c55e];
+}
+
+.popup-message-error {
+    @apply popup-message bg-[#e84820];
 }
 
 @keyframes fadeInOut {
